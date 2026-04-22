@@ -1,0 +1,15 @@
+.page { display: flex; flex-direction: column; gap: 20px; }
+.title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: #e8f4ff; }
+.subtitle { color: rgba(232,244,255,0.45); font-size: 0.85rem; margin-top: 2px; }
+.section { display: flex; flex-direction: column; gap: 12px; }
+.sectionTitle { font-family: 'Orbitron', monospace; font-size: 0.8rem; font-weight: 700; color: rgba(232,244,255,0.6); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+.list { display: flex; flex-direction: column; gap: 10px; }
+.card { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px; }
+.cardLeft { display: flex; align-items: flex-start; gap: 14px; flex: 1; }
+.cardIcon { font-size: 1.6rem; }
+.cardTitle { font-size: 0.95rem; font-weight: 700; color: #e8f4ff; margin-bottom: 2px; }
+.cardMeta { font-size: 0.78rem; color: rgba(232,244,255,0.45); }
+.cardReason { font-size: 0.82rem; color: rgba(232,244,255,0.6); font-style: italic; margin: 6px 0; }
+.cardRequester { font-size: 0.78rem; color: rgba(232,244,255,0.4); }
+.cardActions { display: flex; gap: 8px; flex-shrink: 0; }
+.resolved { opacity: 0.65; }

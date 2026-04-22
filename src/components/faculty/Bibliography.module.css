@@ -1,0 +1,207 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid var(--accent, #7b2fff);
+  padding-left: 20px;
+}
+
+.title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.subtitle {
+  color: rgba(232, 244, 255, 0.5);
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.addCard {
+  background: rgba(13, 17, 23, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(123, 47, 255, 0.15);
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.addTitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent, #7b2fff);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.addForm {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  position: relative;
+  z-index: 1;
+}
+
+.preview {
+  margin-top: 24px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border-left: 4px solid var(--accent, #7b2fff);
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.previewLabel {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent, #7b2fff);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.previewText {
+  font-size: 0.95rem;
+  color: rgba(232, 244, 255, 0.9);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.projectSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.projectHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 0 8px;
+}
+
+.projectName {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.projectName::before {
+  content: '📁';
+  font-size: 1.2rem;
+}
+
+.citationList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.citation {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 24px;
+  background: rgba(13, 17, 23, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.citation:hover {
+  background: rgba(13, 17, 23, 0.6);
+  border-color: rgba(123, 47, 255, 0.3);
+  transform: translateX(8px);
+}
+
+.citNum {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent, #7b2fff);
+  width: 32px;
+  flex-shrink: 0;
+  padding-top: 4px;
+  opacity: 0.6;
+}
+
+.citContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.citText {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+.citMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.delBtn {
+  background: rgba(255, 77, 109, 0.1);
+  border: 1px solid rgba(255, 77, 109, 0.2);
+  color: #ff4d6d;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.citation:hover .delBtn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.delBtn:hover {
+  background: #ff4d6d;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+

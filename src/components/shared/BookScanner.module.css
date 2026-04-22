@@ -1,0 +1,311 @@
+.scannerBody {
+  display: flex;
+  gap: 32px;
+  padding: 10px;
+  color: #fff;
+}
+
+.targetBox {
+  position: relative;
+  width: 240px;
+  height: 340px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cornerT, .cornerB {
+  position: absolute;
+  width: 240px;
+  height: 340px;
+  pointer-events: none;
+}
+
+.cornerT::before, .cornerT::after, .cornerB::before, .cornerB::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cornerT::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.cornerT::after { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.cornerB::before { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.cornerB::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+.coverWrap {
+  position: relative;
+  width: 160px;
+  height: 240px;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bookEmoji {
+  font-size: 5rem;
+  z-index: 2;
+  filter: drop-shadow(0 0 20px var(--theme));
+}
+
+.coverGlow {
+  position: absolute;
+  inset: 0;
+  background: var(--theme);
+  opacity: 0.1;
+  filter: blur(40px);
+}
+
+.scanBeam {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #00ffc8;
+  box-shadow: 0 0 15px #00ffc8, 0 0 5px #fff;
+  z-index: 10;
+  opacity: 0.8;
+}
+
+.telemetryOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lineGlow {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: linear-gradient(180deg, rgba(0, 255, 200, 0.1), transparent);
+  transition: height 0.05s linear;
+}
+
+.hudText {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  animation: blink 1s infinite alternate;
+}
+
+@keyframes blink { from { opacity: 0.2; } to { opacity: 0.8; } }
+
+.infoGrid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 12px;
+}
+
+.title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.1em;
+}
+
+.statsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statLine {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+}
+
+.statLabel { color: rgba(255, 255, 255, 0.4); }
+.statDots { flex: 1; border-bottom: 1px dotted rgba(255, 255, 255, 0.15); height: 10px; }
+.statValue { color: #fff; font-weight: 700; }
+
+.metaRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.metaCol {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.1em;
+}
+
+.metaValue {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.reviewSection {
+  margin-top: 10px;
+}
+
+.sectionHeader {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reviewCard {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+}
+
+.revHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.revUser {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #00ffc8;
+}
+
+.revStars { color: #ffd700; font-size: 0.7rem; }
+.revText {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  margin: 0;
+}
+
+.emptyReviews {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  padding: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.actionLayer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.actionBtn {
+  --btn-theme: #00ffc8;
+  position: relative;
+  background: linear-gradient(135deg, rgba(232, 244, 255, 0.05), rgba(232, 244, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 20px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  width: 100%;
+}
+
+.actionBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--btn-theme);
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.15);
+  transform: translateY(-2px);
+}
+
+.actionBtn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+}
+
+.actionBtn:hover::before {
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.btnIcon {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 0 5px var(--btn-theme));
+}
+
+.btnText {
+  flex: 1;
+  text-align: left;
+  font-family: 'Orbitron', monospace;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+
+.btnSub {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
+}
+
+.btnDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.securitySeal {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.45rem;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.2em;
+  text-align: center;
+}

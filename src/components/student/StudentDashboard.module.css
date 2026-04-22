@@ -1,0 +1,346 @@
+.nexus {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 40px;
+}
+
+.neuroPulseContainer {
+    grid-area: telemetry;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: "ident telemetry sector";
+    align-items: flex-end;
+    gap: 30px;
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 10px;
+}
+
+.portalTag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent-bin);
+    letter-spacing: 0.2em;
+    margin-bottom: 4px;
+}
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 950;
+    margin: 4px 0;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.4) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.deptSub {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(232,244,255,0.4);
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+.loanSector {
+    grid-area: sector;
+    text-align: right;
+    padding: 15px 24px;
+    background: rgba(0,255,200,0.05);
+    border: 1px solid rgba(0,255,200,0.15);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 20px rgba(0,255,200,0.05);
+}
+
+.sectorLabel {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    color: rgba(0,255,200,0.6);
+    letter-spacing: 2px;
+}
+
+.sectorVal {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #00ffc8;
+}
+
+.sectorVal small {
+    font-size: 0.7rem;
+    margin-left: 4px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+}
+
+.panel {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panelHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 12px;
+}
+
+.panelTitle {
+    flex: 1;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    margin: 0;
+    color: rgba(232,244,255,0.8);
+}
+
+.panelStatus {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: #00ffc8;
+    background: rgba(0,255,200,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.emptyState {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    color: rgba(232,244,255,0.2);
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.3;
+}
+
+.browseBtn {
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid var(--accent-bin);
+    color: var(--accent-bin);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.browseBtn:hover {
+    background: rgba(0,240,255,0.1);
+    box-shadow: 0 0 20px rgba(0,240,255,0.2);
+}
+
+.assetList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.assetItem {
+    padding: 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-left: 4px solid #00ffc8;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.assetItem:hover {
+    background: rgba(255,255,255,0.04);
+    transform: translateX(5px);
+}
+
+.assetMain {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.assetInfo {
+    flex: 1;
+}
+
+.assetTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.assetAuthor {
+    font-size: 0.8rem;
+    color: rgba(232,244,255,0.4);
+}
+
+.assetTelemetry {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.telemetryVal {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.telemetryBar {
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.telemetryFill {
+    height: 100%;
+    transition: width 1s ease-out;
+}
+
+.sidePanel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.miniCard {
+    padding: 20px;
+}
+
+.miniHeader {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(232,244,255,0.4);
+    margin-bottom: 16px;
+}
+
+.systemGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.systemItem {
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.systemItem:hover {
+    background: rgba(0,255,200,0.1);
+    border-color: rgba(0,255,200,0.3);
+    transform: scale(1.05);
+}
+
+.sysIcon {
+    font-size: 1.2rem;
+}
+
+.sysName {
+    font-size: 0.7rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    color: rgba(232,244,255,0.6);
+}
+
+.hazardCard {
+    padding: 20px;
+    background: rgba(255,77,109,0.05) !important;
+    border-color: rgba(255,77,109,0.2) !important;
+    animation: hazardPulse 2s infinite ease-in-out;
+}
+
+@keyframes hazardPulse {
+    0% { box-shadow: 0 0 0 rgba(255,77,109,0); }
+    50% { box-shadow: 0 0 20px rgba(255,77,109,0.1); }
+    100% { box-shadow: 0 0 0 rgba(255,77,109,0); }
+}
+
+.hazardHeader {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    color: #ff4d6d;
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+}
+
+.hazardBody {
+    margin-bottom: 16px;
+}
+
+.hazardDesc {
+    font-size: 0.75rem;
+    color: rgba(232,244,255,0.6);
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.hazardStat {
+    display: flex;
+    flex-direction: column;
+}
+
+.hazardVal {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.hazardLabel {
+    font-size: 0.6rem;
+    color: rgba(255,77,109,0.6);
+    letter-spacing: 1px;
+}
+
+.hazardAction {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,77,109,0.2);
+    border: 1px solid #ff4d6d;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.hazardAction:hover {
+    background: #ff4d6d;
+    box-shadow: 0 0 15px rgba(255,77,109,0.4);
+}

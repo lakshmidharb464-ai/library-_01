@@ -1,0 +1,106 @@
+.pulseCard {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 280px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tag {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  color: rgba(0, 255, 200, 0.5);
+  letter-spacing: 0.1em;
+}
+
+.title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.85rem;
+  margin: 0;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  color: #00ffc8;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  background: #00ffc8;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00ffc8;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink { from { opacity: 0.4; } to { opacity: 1; } }
+
+.pulseArea {
+  height: 60px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.pulseSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.pulsePath {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: pulseMotion 4s linear infinite;
+}
+
+.pulsePathGlow {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  filter: blur(4px);
+  opacity: 0.5;
+  animation: pulseMotion 4s linear infinite;
+}
+
+@keyframes pulseMotion {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statLine {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.statVal {
+  color: #00ffc8;
+  font-weight: 700;
+}

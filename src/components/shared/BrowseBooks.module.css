@@ -1,0 +1,175 @@
+.page { display: flex; flex-direction: column; gap: 14px; }
+.title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: #e8f4ff; }
+.subtitle { color: rgba(232,244,255,0.45); font-size: 0.85rem; margin-top: 2px; }
+
+.filters { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.catTabs { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.catTab {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  color: rgba(232,244,255,0.5);
+  font-size: 0.77rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.catTab:hover { border-color: rgba(0,255,200,0.3); color: #e8f4ff; }
+
+.catActive {
+  background: rgba(0,255,200,0.1);
+  border-color: rgba(0,255,200,0.35);
+  color: #00ffc8;
+}
+
+.resultsHeader {
+  font-size: 0.8rem;
+  color: rgba(232,244,255,0.35);
+  letter-spacing: 0.04em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  position: relative;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%, rgba(0,255,200,0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.card:hover::before { opacity: 1; }
+
+.card:hover {
+  border-color: rgba(0,255,200,0.25);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+
+.heartBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  color: rgba(232,244,255,0.3);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+}
+
+.heartBtn:hover { color: #ff4d6d; border-color: rgba(255,77,109,0.4); background: rgba(255,77,109,0.1); transform: scale(1.15); }
+
+.hearted {
+  color: #ff4d6d !important;
+  border-color: rgba(255,77,109,0.5) !important;
+  background: rgba(255,77,109,0.15) !important;
+  animation: heart-pop 0.45s cubic-bezier(0.17, 0.89, 0.32, 1.49);
+}
+ 
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+ 
+.hearted::after {
+  content: '❤️';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  animation: sparkle-drift 0.6s ease-out forwards;
+  pointer-events: none;
+  opacity: 0;
+}
+ 
+@keyframes sparkle-drift {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(-50%, -150%) scale(1.5); opacity: 0; }
+}
+
+.cover {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(20px);
+}
+
+.coverEmoji { font-size: 2.2rem; position: relative; z-index: 1; }
+
+.coverGlow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  opacity: 0.25;
+  filter: blur(18px);
+}
+
+.body { 
+  padding: 16px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+  flex: 1; 
+  transform: translateZ(10px);
+}
+.bookTitle { font-size: 0.9rem; font-weight: 700; color: #e8f4ff; line-height: 1.3; }
+.bookAuthor { font-size: 0.75rem; color: rgba(232,244,255,0.45); }
+
+.rating { display: flex; align-items: center; gap: 6px; }
+.stars { font-size: 0.8rem; }
+.starFilled { color: #ffd700; }
+.starEmpty { color: rgba(232,244,255,0.2); }
+.ratingNum { font-size: 0.73rem; color: rgba(232,244,255,0.4); }
+
+.avail { margin-top: 2px; }
+
+.actions {
+  display: flex;
+  gap: 6px;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Detail Modal */
+.detailModal { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.detailCover { width: 100%; height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; font-size: 3rem; }

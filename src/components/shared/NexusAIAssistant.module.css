@@ -1,0 +1,308 @@
+.assistantWrapper {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.trigger {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 255, 200, 0.3);
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 20px rgba(0, 255, 200, 0.1);
+}
+
+.trigger:hover {
+    transform: scale(1.1) rotate(15deg);
+    border-color: #00ffc8;
+    box-shadow: 0 0 30px rgba(0, 255, 200, 0.3);
+}
+
+/* Orb Core Animation */
+.orbInner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.core {
+    width: 12px;
+    height: 12px;
+    background: #00ffc8;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #00ffc8, 0 0 30px #00ffc8;
+    animation: corePulse 2s infinite ease-in-out;
+}
+
+.rings {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.ring1, .ring2 {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    border: 1px solid rgba(0, 255, 200, 0.2);
+    border-radius: 50%;
+}
+
+.ring1 {
+    animation: rotateRing 4s linear infinite;
+    border-top-color: #00ffc8;
+}
+
+.ring2 {
+    animation: rotateRing 6s linear infinite reverse;
+    border-bottom-color: #00ffc8;
+}
+
+@keyframes corePulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.4); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes rotateRing {
+    to { transform: rotate(360deg); }
+}
+
+.pulseLabel {
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 240, 255, 0.1);
+    color: #00ffc8;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.trigger:hover .pulseLabel {
+    opacity: 1;
+    right: 80px;
+}
+
+/* Chat Window */
+.chatWindow {
+    width: 350px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(30px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform-origin: bottom right;
+}
+
+.opened .chatWindow {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.header {
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: #00ffc8;
+    letter-spacing: 0.1em;
+}
+
+.headerTitle h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    margin: 4px 0 0 0;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.headerStatus {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.6rem;
+    color: rgba(232, 244, 255, 0.4);
+    font-weight: 700;
+}
+
+.statusDot {
+    width: 6px;
+    height: 6px;
+    background: #00ffc8;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #00ffc8;
+}
+
+.messageArea {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+}
+
+.messageArea::-webkit-scrollbar { width: 4px; }
+.messageArea::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 2px; }
+
+.message {
+    max-width: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: msgIn 0.3s ease-out backwards;
+}
+
+@keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.user { align-self: flex-end; }
+.ai { align-self: flex-start; }
+
+.msgText {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.user .msgText {
+    background: rgba(123, 47, 255, 0.2);
+    border: 1px solid rgba(123, 47, 255, 0.3);
+    color: #e8f4ff;
+    border-bottom-right-radius: 2px;
+}
+
+.ai .msgText {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-bottom-left-radius: 2px;
+}
+
+.msgTime {
+    font-size: 0.6rem;
+    color: rgba(232, 244, 255, 0.3);
+    margin: 0 4px;
+}
+
+.user .msgTime { text-align: right; }
+
+/* Typing indicator */
+.typing {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+}
+
+.typing span {
+    width: 6px;
+    height: 6px;
+    background: #00ffc8;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+    opacity: 0.3;
+}
+
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-4px); opacity: 1; }
+}
+
+.inputArea {
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    gap: 10px;
+}
+
+.inputArea input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #fff;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.inputArea input:focus {
+    outline: none;
+    border-color: #00ffc8;
+    background: rgba(0, 255, 200, 0.05);
+}
+
+.inputArea button {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #00ffc8;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.inputArea button:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 200, 0.4);
+}
+
+.inputArea button:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.1);
+    cursor: not-allowed;
+}
+
+.inputArea button svg {
+    width: 18px;
+    height: 18px;
+}

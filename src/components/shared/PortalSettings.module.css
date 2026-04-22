@@ -1,0 +1,383 @@
+.settingsPage {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* 1000x HUD Calibration Frame */
+.calibrationFrame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(0, 255, 200, 0.1);
+  background: 
+    linear-gradient(rgba(0, 255, 200, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 200, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -1;
+}
+
+.calibrationFrame::before, .calibrationFrame::after {
+  content: '';
+  position: absolute;
+  width: 40px; height: 40px;
+  border: 2px solid var(--accent-primary);
+  opacity: 0.5;
+}
+
+.calibrationFrame::before {
+  top: 10px; left: 10px;
+  border-right: none; border-bottom: none;
+}
+
+.calibrationFrame::after {
+  bottom: 10px; right: 10px;
+  border-left: none; border-top: none;
+}
+
+/* Status Gauge Header */
+.statusGaugeContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: rgba(0, 255, 200, 0.05);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: 0 4px 4px 0;
+  width: fit-content;
+}
+
+.gaugePulse {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-primary);
+  animation: pulse-rapid 1.5s infinite;
+}
+
+@keyframes pulse-rapid {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+.gaugeText {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  color: var(--accent-primary);
+  letter-spacing: 0.1em;
+}
+
+.pageHeader {
+  position: relative;
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+}
+
+.headerGlow {
+  position: absolute;
+  top: -60px;
+  left: -40px;
+  width: 300px;
+  height: 200px;
+  background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+  opacity: 0.15;
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.mainTitle {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.mainSubtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.settingsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.sectionHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 12px;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.sectionTag {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  color: var(--accent-primary);
+  opacity: 0.6;
+}
+
+/* Accent Mapping Grid */
+.accentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.accentCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.accentCard:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--accent-color);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(var(--accent-color-rgb), 0.2);
+}
+
+.accentActive {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 30px rgba(var(--accent-color-rgb), 0.2);
+}
+
+.accentPreview {
+  width: 60px;
+  height: 60px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--accent-color);
+  transition: transform 0.3s ease;
+}
+
+.accentCard:hover .accentPreview {
+  transform: scale(1.1);
+}
+
+.accentLabel {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #e8f4ff;
+}
+
+.activeIndicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Atmosphere Mapping Grid */
+.atmosphereGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.atmosphereCard {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  min-width: 0;
+  min-height: 0;
+}
+
+.atmoPreview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+}
+
+.atmoPreview video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  filter: grayscale(0.2);
+  transition: all 0.4s ease;
+}
+
+.atmoOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8));
+}
+
+.atmosphereCard:hover .atmoPreview {
+  border-color: var(--accent-primary);
+}
+
+.atmosphereCard:hover .atmoPreview video {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.atmoActive .atmoPreview {
+  border-color: var(--accent-primary);
+  border-width: 2px;
+  box-shadow: 0 0 25px rgba(0, 255, 200, 0.3);
+}
+
+.atmoActive .atmoPreview video {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.atmoLabel {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding-left: 4px;
+}
+
+/* 3D Tilt Wrapper */
+.tiltWrapper {
+  perspective: 1200px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tiltInner {
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Atmo Telemetry Overlay */
+.atmoTelemetry {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 3px;
+  height: 20px;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.atmosphereCard:hover .atmoTelemetry {
+  opacity: 0.8;
+}
+
+.telemetryBar {
+  width: 4px;
+  background: var(--accent-primary);
+  border-radius: 2px 2px 0 0;
+  animation: telemetry-bounce 0.5s infinite alternate ease-in-out;
+}
+
+.telemetryBar:nth-child(2) { animation-delay: 0.1s; }
+.telemetryBar:nth-child(3) { animation-delay: 0.3s; }
+.telemetryBar:nth-child(4) { animation-delay: 0.2s; }
+.telemetryBar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes telemetry-bounce {
+  0% { height: 4px; }
+  100% { height: 18px; }
+}
+
+.telemetryCode {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  color: var(--accent-primary);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.atmosphereCard:hover .telemetryCode {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Optimization Controls */
+.controlsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.controlCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.controlCard:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.controlLabel {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.controlDesc {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}

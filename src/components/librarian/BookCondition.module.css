@@ -1,0 +1,36 @@
+.page { display: flex; flex-direction: column; gap: 20px; }
+.title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: #e8f4ff; }
+.subtitle { color: rgba(232,244,255,0.45); font-size: 0.85rem; margin-top: 2px; }
+
+.summaryRow { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.sumCard {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1; min-width: 90px;
+}
+.sumCard:hover { background: rgba(255,255,255,0.06); }
+.sumActive { background: rgba(255,255,255,0.06) !important; }
+.sumIcon { font-size: 1.2rem; }
+.sumCount { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: rgba(232,244,255,0.8); }
+.sumLabel { font-size: 0.72rem; color: rgba(232,244,255,0.45); font-weight: 600; }
+
+.conditionPicker { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.condBtn {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: rgba(232,244,255,0.6);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.condBtn:hover { opacity: 0.85; }
+.condActive { font-weight: 700; }

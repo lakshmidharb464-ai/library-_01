@@ -1,0 +1,100 @@
+.page { display: flex; flex-direction: column; gap: 20px; }
+.header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: #e8f4ff; }
+.subtitle { color: rgba(232,244,255,0.45); font-size: 0.85rem; margin-top: 2px; }
+
+.composeCard {
+  background: rgba(10,18,40,0.8);
+  border: 1px solid rgba(0,255,200,0.2);
+  border-radius: 18px;
+  padding: 24px;
+  animation: fadeIn 0.3s ease;
+}
+.composeTitle { font-family: 'Orbitron', monospace; font-size: 0.85rem; font-weight: 700; color: #00ffc8; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.06em; }
+.form { display: flex; flex-direction: column; gap: 14px; }
+.formRow { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+
+.priorityPicker { display: flex; gap: 8px; flex-wrap: wrap; }
+.pBtn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(232,244,255,0.5);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pBtn:hover { opacity: 0.85; }
+.pActive { font-weight: 700; }
+
+.pinToggle { display: flex; flex-direction: column; gap: 8px; }
+.toggle {
+  width: 44px; height: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+.toggle.toggleOn { background: rgba(0,255,200,0.3); border-color: rgba(0,255,200,0.5); }
+.toggleThumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: rgba(232,244,255,0.5);
+  transition: all 0.3s;
+}
+.toggleOn .toggleThumb { left: 23px; background: #00ffc8; }
+
+.list { display: flex; flex-direction: column; gap: 12px; }
+
+.annCard {
+  border-radius: 16px;
+  border: 1px solid;
+  padding: 18px 20px;
+  position: relative;
+  transition: all 0.3s;
+  animation: fadeIn 0.4s ease;
+}
+.annCard:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+.pinBadge {
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  background: rgba(255,215,0,0.2);
+  border: 1px solid rgba(255,215,0,0.4);
+  border-radius: 20px;
+  color: #ffd700;
+}
+
+.annHeader { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.annLeft { display: flex; align-items: flex-start; gap: 12px; }
+.annIcon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+.annTitle { font-family: 'Orbitron', monospace; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+.annMeta { font-size: 0.75rem; color: rgba(232,244,255,0.4); }
+.annActions { display: flex; gap: 6px; flex-shrink: 0; }
+.annBtn {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.annBtn:hover { background: rgba(255,255,255,0.1); }
+.pinnedBtn { background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.3); }
+.deleteBtn:hover { background: rgba(255,77,109,0.15); border-color: rgba(255,77,109,0.3); }
+.annBody { font-size: 0.87rem; color: rgba(232,244,255,0.7); line-height: 1.6; margin-bottom: 10px; }
+.annFooter { display: flex; gap: 8px; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

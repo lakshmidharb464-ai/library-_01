@@ -1,0 +1,310 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  background: rgba(10, 18, 40, 0.92);
+  border-right: 1px solid rgba(0, 255, 200, 0.1);
+  backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 68px;
+}
+
+.glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  opacity: 0.8;
+  filter: blur(4px);
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 1px solid rgba(0, 255, 200, 0.07);
+  min-height: 72px;
+}
+
+.logoIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--role-color, #00ffc8), rgba(0,0,0,0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #050a1a;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.logoName {
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #e8f4ff;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.roleLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* User card */
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #050a1a;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.userName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e8f4ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Quick Stats */
+.quickStats {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  margin: 0 4px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.qStat {
+  flex: 1;
+  text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(232,244,255,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Search Hint */
+.searchHint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 12px;
+  padding: 8px 12px;
+  background: rgba(0, 255, 200, 0.04);
+  border: 1px solid rgba(0, 255, 200, 0.08);
+  border-radius: 10px;
+  color: rgba(232, 244, 255, 0.35);
+  font-size: 0.8rem;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.searchHint:hover {
+  background: rgba(0, 255, 200, 0.08);
+  color: rgba(232, 244, 255, 0.6);
+  border-color: rgba(0, 255, 200, 0.15);
+}
+
+.searchHintIcon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.searchHintKbd {
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: rgba(0, 255, 200, 0.4);
+  letter-spacing: 0.05em;
+}
+
+/* Nav */
+.nav {
+  flex: 1;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: none;
+  color: rgba(232, 244, 255, 0.5);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e8f4ff;
+}
+
+.navItem.active {
+  background: rgba(var(--active-color, #00ffc8), 0.1);
+  color: #e8f4ff;
+  font-weight: 600;
+}
+
+.navIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  flex: 1;
+}
+
+.activeLine {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: 3px 0 0 3px;
+}
+
+/* Footer */
+.footer {
+  padding: 12px;
+  border-top: 1px solid rgba(0, 255, 200, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.collapseBtn {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(232, 244, 255, 0.5);
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  align-self: flex-end;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collapseBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8f4ff;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 77, 109, 0.2);
+  background: rgba(255, 77, 109, 0.07);
+  color: rgba(255, 77, 109, 0.8);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+  background: rgba(255, 77, 109, 0.15);
+  border-color: rgba(255, 77, 109, 0.4);
+  color: #ff4d6d;
+  transform: translateX(2px);
+}
+
+/* Tooltip for collapsed mode uses global [data-tooltip] */

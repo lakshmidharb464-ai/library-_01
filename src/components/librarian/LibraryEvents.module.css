@@ -1,0 +1,34 @@
+.page { display: flex; flex-direction: column; gap: 20px; }
+.header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: #e8f4ff; }
+.subtitle { color: rgba(232,244,255,0.45); font-size: 0.85rem; margin-top: 2px; }
+
+.list { display: flex; flex-direction: column; gap: 16px; }
+
+.card {
+  display: flex; gap: 20px; align-items: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  transition: all 0.3s;
+}
+.card:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+.dateBlock {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 90px; height: 90px; flex-shrink: 0;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--c); border-radius: 12px;
+}
+.month { font-size: 0.8rem; font-weight: 700; color: var(--c); text-transform: uppercase; letter-spacing: 0.1em; }
+.day { font-family: 'Orbitron', monospace; font-size: 2rem; font-weight: 900; line-height: 1; margin: 4px 0; color: #e8f4ff; }
+.time { font-size: 0.75rem; color: rgba(232,244,255,0.5); }
+
+.info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.evTitle { font-size: 1.1rem; font-weight: 700; color: #e8f4ff; }
+.evMeta { font-size: 0.8rem; color: rgba(232,244,255,0.5); }
+
+.progressContainer { margin-top: 8px; max-width: 300px; }
+.progressLabel { display: flex; justify-content: space-between; font-size: 0.75rem; color: rgba(232,244,255,0.6); margin-bottom: 4px; }
+
+.actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }

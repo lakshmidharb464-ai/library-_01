@@ -1,0 +1,31 @@
+.page { display: flex; flex-direction: column; gap: 20px; }
+.title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: #e8f4ff; }
+.subtitle { color: rgba(232,244,255,0.45); font-size: 0.85rem; margin-top: 2px; }
+
+.snapshot { padding: 24px; }
+.snapshotTitle { font-family: 'Orbitron', monospace; font-size: 0.8rem; font-weight: 700; color: rgba(232,244,255,0.6); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 20px; }
+.snapshotGrid { display: flex; gap: 24px; flex-wrap: wrap; }
+.snapshotItem { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 80px; }
+.snapshotIcon { font-size: 1.6rem; }
+.snapshotCount { font-family: 'Orbitron', monospace; font-size: 1.6rem; font-weight: 800; color: var(--s-color); }
+.snapshotLabel { font-size: 0.75rem; color: rgba(232,244,255,0.45); }
+
+.actionGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .actionGrid { grid-template-columns: 1fr; } }
+
+.actionCard { padding: 28px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.actionIcon { font-size: 2.5rem; }
+.actionTitle { font-family: 'Orbitron', monospace; font-size: 0.9rem; font-weight: 700; color: #e8f4ff; }
+.actionDesc { font-size: 0.85rem; color: rgba(232,244,255,0.5); line-height: 1.5; }
+
+.warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(255,190,11,0.08);
+  border-color: rgba(255,190,11,0.25);
+  font-size: 0.85rem;
+  color: rgba(232,244,255,0.65);
+  line-height: 1.5;
+}

@@ -1,0 +1,15 @@
+.page { display: flex; flex-direction: column; gap: 16px; }
+.title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 800; color: #e8f4ff; }
+.subtitle { color: rgba(232,244,255,0.45); font-size: 0.85rem; margin-top: 2px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.card { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.cardHeader { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bookBadge { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 20px; border: 1px solid; font-size: 0.78rem; }
+.bookName { font-weight: 600; color: #e8f4ff; }
+.stars { font-size: 1rem; color: #ffd700; display: flex; align-items: center; gap: 6px; }
+.ratingNum { font-size: 0.8rem; color: rgba(232,244,255,0.5); font-family: 'Orbitron', monospace; font-weight: 700; }
+.comment { font-size: 0.87rem; color: rgba(232,244,255,0.7); font-style: italic; line-height: 1.5; }
+.reviewer { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #00ffc8, #7b2fff); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #050a1a; }
+.reviewerName { font-size: 0.82rem; font-weight: 600; color: #e8f4ff; }
+.reviewDate { font-size: 0.73rem; color: rgba(232,244,255,0.35); }
