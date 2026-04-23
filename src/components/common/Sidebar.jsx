@@ -8,6 +8,7 @@ const NAV = {
     { icon: '◈', label: 'Dashboard',      path: '/admin' },
     { icon: '📚', label: 'Book Catalog',   path: '/admin/books' },
     { icon: '👥', label: 'Personnel',      path: '/admin/users' },
+    { icon: '🛡️', label: 'Approvals',      path: '/admin/approvals' },
     { icon: '💬', label: 'Comm-Link',      path: '/admin/comms' },
     { icon: '⭐', label: 'Reviews',        path: '/admin/reviews' },
     { icon: '💡', label: 'Requests',       path: '/admin/requests' },
@@ -17,18 +18,18 @@ const NAV = {
     { icon: '⚙️', label: 'Settings',       path: '/admin/settings' },
     { icon: '🔄', label: 'Import/Export',  path: '/admin/io' },
   ],
-  librarian: [
-    { icon: '◈', label: 'Dashboard',      path: '/librarian' },
-    { icon: '👥', label: 'Personnel',      path: '/librarian/users' },
-    { icon: '📤', label: 'Issue/Return',   path: '/librarian/issue' },
-    { icon: '📌', label: 'Reservations',   path: '/librarian/reservations' },
-    { icon: '💬', label: 'Comm-Link',      path: '/librarian/comms' },
-    { icon: '💰', label: 'Fines',          path: '/librarian/fines' },
-    { icon: '📋', label: 'Reports',        path: '/librarian/reports' },
-    { icon: '🔖', label: 'Book Condition', path: '/librarian/condition' },
-    { icon: '📅', label: 'Events',         path: '/librarian/events' },
-    { icon: '💡', label: 'Recommendations',path: '/librarian/recommendations' },
-    { icon: '⚙️', label: 'Settings',       path: '/librarian/settings' },
+  custodian: [
+    { icon: '◈', label: 'Dashboard',      path: '/custodian' },
+    { icon: '👥', label: 'Personnel',      path: '/custodian/users' },
+    { icon: '📤', label: 'Issue/Return',   path: '/custodian/issue' },
+    { icon: '📌', label: 'Reservations',   path: '/custodian/reservations' },
+    { icon: '💬', label: 'Comm-Link',      path: '/custodian/comms' },
+    { icon: '💰', label: 'Fines',          path: '/custodian/fines' },
+    { icon: '📋', label: 'Reports',        path: '/custodian/reports' },
+    { icon: '🔖', label: 'Book Condition', path: '/custodian/condition' },
+    { icon: '📅', label: 'Events',         path: '/custodian/events' },
+    { icon: '💡', label: 'Recommendations',path: '/custodian/recommendations' },
+    { icon: '⚙️', label: 'Settings',       path: '/custodian/settings' },
   ],
   faculty: [
     { icon: '◈', label: 'Dashboard',      path: '/faculty' },
@@ -59,14 +60,14 @@ const NAV = {
 
 const ROLE_COLORS = {
   admin:     '#ff4d6d',
-  librarian: '#00ffc8',
+  custodian: '#00ffc8',
   faculty:   '#7b2fff',
   student:   '#00b4d8',
 };
 
 const ROLE_LABELS = {
   admin:     '🛡️ Admin Nexus',
-  librarian: '📚 Librarian',
+  custodian: '📚 Nexus Custodian',
   faculty:   '🧠 Faculty',
   student:   '🎓 Student',
 };
@@ -74,7 +75,7 @@ const ROLE_LABELS = {
 export default function Sidebar({ role }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { dispatch, currentUser, addToast, getStats } = useLibrary();
+  const { dispatch, currentUser, addToast, getStats, users } = useLibrary();
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = NAV[role] || [];
@@ -113,7 +114,7 @@ export default function Sidebar({ role }) {
 
       {/* User */}
       {currentUser && !collapsed && (
-        <div className={styles.userCard}>
+        <div className={styles.userCard} onClick={() => navigate('/profile')} title="View Profile" style={{ cursor: 'pointer' }}>
           <div className={styles.avatar} style={{ background: color }}>
             {currentUser.name.charAt(0)}
           </div>
@@ -121,6 +122,7 @@ export default function Sidebar({ role }) {
             <span className={styles.userName}>{currentUser.name}</span>
             <span className={styles.userRole} style={{ color }}>{currentUser.role}</span>
           </div>
+          <span className={styles.userEditIcon}>⚙️</span>
         </div>
       )}
 
@@ -131,7 +133,7 @@ export default function Sidebar({ role }) {
             <div className={styles.qStat}><span style={{ color }}>📚</span> {stats.totalBooks}</div>
             <div className={styles.qStat}><span style={{ color: '#ff4d6d' }}>⚠️</span> {stats.overdueCount}</div>
           </>}
-          {role === 'librarian' && <>
+          {role === 'custodian' && <>
             <div className={styles.qStat}><span style={{ color }}>📤</span> {stats.activeIssues}</div>
             <div className={styles.qStat}><span style={{ color: '#ff4d6d' }}>⚠️</span> {stats.overdueCount}</div>
           </>}
@@ -152,20 +154,32 @@ export default function Sidebar({ role }) {
 
       {/* Nav */}
       <nav className={styles.nav}>
-        {navItems.map(item => (
-          <button
-            key={item.path}
-            className={`${styles.navItem} ${isActive(item.path) ? styles.active : ''}`}
-            style={isActive(item.path) ? { '--active-color': color } : {}}
-            onClick={() => handleNavClick(item.path)}
-            data-tooltip={collapsed ? item.label : undefined}
-          >
-            <span className={styles.navIcon}>{item.icon}</span>
-            {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
-            {isActive(item.path) && <span className={styles.activeLine} style={{ background: color }} />}
-          </button>
-        ))}
+        {navItems.map(item => {
+          // Dynamic badge logic
+          let badgeCount = 0;
+          if (item.label === 'Approvals') {
+            badgeCount = users.filter(u => u.status === 'pending').length;
+          }
+
+          return (
+            <button
+              key={item.path}
+              className={`${styles.navItem} ${isActive(item.path) ? styles.active : ''}`}
+              style={isActive(item.path) ? { '--active-color': color } : {}}
+              onClick={() => handleNavClick(item.path)}
+              data-tooltip={collapsed ? item.label : undefined}
+            >
+              <span className={styles.navIcon}>{item.icon}</span>
+              {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
+              {!collapsed && badgeCount > 0 && (
+                <span className={styles.navBadge}>{badgeCount}</span>
+              )}
+              {isActive(item.path) && <span className={styles.activeLine} style={{ background: color }} />}
+            </button>
+          );
+        })}
       </nav>
+
 
       {/* Footer */}
       <div className={styles.footer}>

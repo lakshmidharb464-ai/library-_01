@@ -1,0 +1,421 @@
+.settingsPage {
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+  background: radial-gradient(circle at 50% -20%, rgba(0, 255, 200, 0.05), transparent), #050508;
+  display: flex;
+  justify-content: center;
+}
+
+.settingsContainer {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 4rem;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: sticky;
+  top: 6rem;
+  height: fit-content;
+}
+
+.backBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+  transition: all 0.3s;
+  width: fit-content;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transform: translateX(-4px);
+}
+
+.sidebarTitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+  background: linear-gradient(to right, #fff, rgba(255,255,255,0.4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.navItem {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 1.2rem 1.5rem;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  padding-left: 2rem;
+}
+
+.activeNavItem {
+  background: linear-gradient(90deg, rgba(0, 255, 200, 0.1), transparent);
+  color: #00ffc8;
+  border-left: 3px solid #00ffc8;
+}
+
+.activeNavItem span {
+  filter: drop-shadow(0 0 8px #00ffc8);
+}
+
+/* Content Area */
+.contentArea {
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 32px;
+  padding: 4rem;
+  min-height: 700px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contentArea::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 200, 0.2), transparent);
+}
+
+.sectionHeader {
+  margin-bottom: 4rem;
+}
+
+.sectionTitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.sectionDesc {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Forms */
+.formGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.stackedForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 450px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.field input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.2rem;
+  border-radius: 16px;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.field input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 255, 200, 0.4);
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.1);
+}
+
+.field input[readonly] {
+  opacity: 0.6;
+  cursor: default;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.submitBtn {
+  background: linear-gradient(135deg, #00ffc8, #00b4d8);
+  color: #050a1a;
+  border: none;
+  padding: 1.2rem 2rem;
+  border-radius: 16px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.submitBtn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 255, 200, 0.3);
+}
+
+.submitBtn:active {
+  transform: translateY(-2px);
+}
+
+.submitBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Security Specific */
+.securityGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.subSection {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 3rem;
+}
+
+.subSection:last-child {
+  border-bottom: none;
+}
+
+.subSection h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 1px;
+}
+
+/* Toggles & Control Rows */
+.controlGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.controlRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.controlRow:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.controlInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.controlLabel {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.controlDesc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Switch Styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 22px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #fff;
+  transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+  background-color: #00ffc8;
+  box-shadow: 0 0 15px rgba(0, 255, 200, 0.4);
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Theme Grid */
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.themeOption {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.themeOption:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.themeActive {
+  background: rgba(0, 255, 200, 0.1);
+  border-color: #00ffc8;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.1);
+}
+
+.themePreview {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.themeName {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.placeholderBox {
+  background: rgba(255, 255, 255, 0.01);
+  padding: 3rem;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.placeholderText {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 1rem;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+@media (max-width: 992px) {
+  .settingsContainer {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .sidebar {
+    position: relative;
+    top: 0;
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+  .navItem {
+    white-space: nowrap;
+    padding: 0.8rem 1.2rem;
+  }
+  .contentArea {
+    padding: 2rem;
+  }
+}

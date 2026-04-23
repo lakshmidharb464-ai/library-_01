@@ -41,3 +41,5 @@
 .statusBadge.active:hover { background: rgba(0, 255, 200, 0.15); box-shadow: 0 0 12px rgba(0, 255, 200, 0.2); }
 .statusBadge.inactive { color: #ff4d6d; border-color: rgba(255, 77, 109, 0.3); background: rgba(255, 77, 109, 0.05); }
 .statusBadge.inactive:hover { background: rgba(255, 77, 109, 0.15); box-shadow: 0 0 12px rgba(255, 77, 109, 0.2); }
+.statusBadge.pending { color: #ffaa00; border-color: rgba(255, 170, 0, 0.3); background: rgba(255, 170, 0, 0.05); }
+.statusBadge.pending:hover { background: rgba(255, 170, 0, 0.15); box-shadow: 0 0 12px rgba(255, 170, 0, 0.2); }

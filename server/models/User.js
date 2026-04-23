@@ -6,11 +6,16 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { 
     type: String, 
-    enum: ['student', 'faculty', 'librarian', 'admin'],
+    enum: ['student', 'faculty', 'custodian', 'admin'],
     default: 'student' 
   },
   department: { type: String, default: 'Computer Science' },
   isActive: { type: Boolean, default: true },
+  status: { 
+    type: String, 
+    enum: ['active', 'pending', 'suspended'], 
+    default: 'pending' 
+  },
   borrowLimit: { type: Number, default: 3 },
   maxDays: { type: Number, default: 14 }
 }, { timestamps: true });

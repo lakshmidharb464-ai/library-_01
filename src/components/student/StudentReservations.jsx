@@ -23,7 +23,7 @@ export default function StudentReservations() {
         expiresAt: new Date(Date.now() + 3 * 86400000).toISOString(),
       },
     });
-    addToast('Reservation placed! The librarian will notify you when ready.', 'success');
+    addToast('Reservation placed! The Custodian will notify you when ready.', 'success');
     setBookId('');
   };
 

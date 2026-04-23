@@ -344,3 +344,86 @@
     background: #ff4d6d;
     box-shadow: 0 0 15px rgba(255,77,109,0.4);
 }
+
+.logsPanel {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.2) !important;
+}
+
+.logsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 8px;
+}
+
+.logsTitleWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pulseBtn {
+    background: rgba(0, 255, 200, 0.1);
+    border: 1px solid rgba(0, 255, 200, 0.3);
+    color: #00ffc8;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+}
+
+.pulseBtn:hover {
+    background: rgba(0, 255, 200, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 200, 0.3);
+    transform: translateY(-1px);
+}
+
+.pulseBtn:active {
+    transform: translateY(1px);
+}
+
+.logsTitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: rgba(232,244,255,0.6);
+}
+
+.logsStatus {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: #00ffc8;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.4; }
+}
+
+.logsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(232,244,255,0.4);
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.logItem {
+    line-height: 1.4;
+}
+
+.logTime {
+    color: #00ffc8;
+    margin-right: 8px;
+}

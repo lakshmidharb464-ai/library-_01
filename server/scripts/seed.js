@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import Book from '../models/Book.js';
+import Setting from '../models/Setting.js';
 
 dotenv.config();
 
@@ -28,44 +29,106 @@ const seed = async () => {
     // Clear existing data
     await User.deleteMany({});
     await Book.deleteMany({});
+    await Setting.deleteMany({});
     console.log('🧹 Cleared existing database records');
 
+    // Default Password
+    const hashedPassword = await bcrypt.hash('demo123', 10);
+
     // Create Admin
-    const adminPassword = await bcrypt.hash('admin123', 10);
     const admin = await User.create({
       name: 'System Admin',
       email: 'admin@lib.edu',
-      password: adminPassword,
+      password: hashedPassword,
       role: 'admin',
-      department: 'Administration'
+      department: 'Administration',
+      status: 'active',
+      isActive: true
     });
     console.log(`👤 Created Admin: ${admin.email}`);
 
-    // Create Librarian
-    const libPassword = await bcrypt.hash('lib123', 10);
-    const librarian = await User.create({
+    // Create Custodian
+    const custodian = await User.create({
       name: 'Rohan Das',
       email: 'rohan@lib.edu',
-      password: libPassword,
-      role: 'librarian',
-      department: 'Library'
+      password: hashedPassword,
+      role: 'custodian',
+      department: 'Library',
+      status: 'active',
+      isActive: true
     });
-    console.log(`👤 Created Librarian: ${librarian.email}`);
+    console.log(`👤 Created Custodian: ${custodian.email}`);
 
     // Create Student
-    const stuPassword = await bcrypt.hash('student123', 10);
     const student = await User.create({
       name: 'Aarav Sharma',
       email: 'aarav@lib.edu',
-      password: stuPassword,
+      password: hashedPassword,
       role: 'student',
-      department: 'Computer Science'
+      department: 'Computer Science',
+      status: 'active',
+      isActive: true
     });
     console.log(`👤 Created Student: ${student.email}`);
 
     // Seed Books
     await Book.insertMany(books);
     console.log(`📚 Seeded ${books.length} initial books`);
+
+    // Seed Settings
+    await Setting.create({
+      libraryName: 'LibraNova Smart Library',
+      finePerDay: 5,
+      studentLoanDays: 14,
+      facultyLoanDays: 30,
+      maxBooksPerStudent: 3,
+      maxBooksPerFaculty: 5,
+      maxBorrowDays: 14,
+      maxBooksPerUser: 5,
+      fineRatePerDay: 1.00,
+      gracePeriodDays: 2,
+      maxHoldDays: 7,
+      defaultFineCurrency: 'USD',
+      maxReservationLimit: 5,
+      autoRenewEnabled: true,
+      enforceConditionChecks: true,
+      autoNotifyOverdue: true,
+      autoRestocking: false,
+      enableDigitalLending: true,
+      allowInterLibraryLoan: false,
+      maintenanceMode: false,
+      autoArchiveOldLogs: true,
+      requireTwoFactorForStaff: false,
+      facultyAllowSyllabusPublic: true,
+      facultyAutoApproveBibliography: false,
+      facultyNotifyStudentOnReading: true,
+      facultyResearchPortalAccess: true,
+      facultyGrantManagement: false,
+      facultyCollaborativeAnnotating: true,
+      facultyCustomDashboardLayout: false,
+      facultyAutoRenewLimit: 3,
+      facultyPriorityQueuing: true,
+      facultyResourceExport: true,
+      facultyPeerReviewSystem: false,
+      studentAllowSelfRenew: true,
+      studentNotifyDueSoon: true,
+      defaultTimerMins: 25,
+      dailyReadingGoal: 20,
+      dailyReminderTime: 18,
+      focusModeEnabled: false,
+      publicReadingHistory: false,
+      studentAutoRenew: false,
+      readerDarkMode: false,
+      autoAcceptGroups: false,
+      emailForwarding: false,
+      hapticEnabled: true,
+      newsletterSub: false,
+      betaAccess: false,
+      highContrast: false,
+      studentReadingChallenges: true,
+      studentStudyRoomBooking: true
+    });
+    console.log('⚙️  Seeded default library settings');
 
     console.log('✨ Seeding Completed Successfully!');
     process.exit(0);
@@ -76,3 +139,4 @@ const seed = async () => {
 };
 
 seed();
+

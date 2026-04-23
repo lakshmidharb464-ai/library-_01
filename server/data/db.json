@@ -4,67 +4,51 @@
       "id": "admin-1",
       "name": "System Admin",
       "email": "admin@lib.edu",
-      "password": "$2b$10$obGYfMfGPcS9/EtdCd5RBOw8AswK867ZtIDGwf7Rl3eSr9ptXNhMW",
+      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
       "role": "admin",
       "department": "Administration",
-      "isActive": true
+      "isActive": true,
+      "status": "active"
     },
     {
       "id": "lib-1",
       "name": "Rohan Das",
       "email": "rohan@lib.edu",
-      "password": "$2b$10$obGYfMfGPcS9/EtdCd5RBOw8AswK867ZtIDGwf7Rl3eSr9ptXNhMW",
-      "role": "librarian",
+      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
+      "role": "custodian",
       "department": "Library",
-      "isActive": true
+      "isActive": true,
+      "status": "active"
     },
     {
       "id": "stu-1",
       "name": "Aarav Sharma",
       "email": "aarav@lib.edu",
-      "password": "$2b$10$obGYfMfGPcS9/EtdCd5RBOw8AswK867ZtIDGwf7Rl3eSr9ptXNhMW",
+      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
       "role": "student",
       "department": "Computer Science",
-      "isActive": true
+      "isActive": true,
+      "status": "active"
     },
     {
       "id": "fac-1",
       "name": "Dr. Sarah",
       "email": "teacher@lib.edu",
-      "password": "$2b$10$obGYfMfGPcS9/EtdCd5RBOw8AswK867ZtIDGwf7Rl3eSr9ptXNhMW",
+      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
       "role": "faculty",
       "department": "Mathematics",
-      "isActive": true
+      "isActive": true,
+      "status": "active"
     },
     {
-      "name": "Test Student",
-      "email": "teststudent@lib.edu",
-      "password": "$2b$10$6Ybe01R5bbu16vZG8lOfx.kAi1jLBfYNL4cwP7siWg2WMLT8Fi.Lq",
-      "role": "admin",
-      "department": "General",
-      "_id": "z76sn9yuh",
-      "id": "uzytwrkrt",
-      "createdAt": "2026-04-22T13:17:16.776Z"
-    },
-    {
-      "name": "Random Student",
-      "email": "randomuser123@lib.edu",
-      "password": "$2b$10$j0DhhpYgpqwxX3lbG/YZE.xdL9rnELJ8OnNQEgSRrJ60gdXUEr9ga",
-      "role": "admin",
-      "department": "General",
-      "_id": "1vayuh267",
-      "id": "adpnyjxv7",
-      "createdAt": "2026-04-22T13:23:43.095Z"
-    },
-    {
-      "name": "Real Student",
-      "email": "realstudent@lib.edu",
-      "password": "$2b$10$K218iY/8ZzSr.TAcldrT0OH4l7g.9b7/SOsQq5NHWaQYfhWMujHnu",
+      "id": "stu-pending",
+      "name": "John Doe",
+      "email": "john@lib.edu",
+      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
       "role": "student",
-      "department": "General",
-      "_id": "zd2zedmhu",
-      "id": "x6x2yt43m",
-      "createdAt": "2026-04-22T13:28:29.468Z"
+      "department": "Biology",
+      "isActive": false,
+      "status": "pending"
     }
   ],
   "books": [
@@ -89,129 +73,130 @@
       "publishedYear": 1988,
       "coverColor": "#00b4d8",
       "rating": 4.5
+    },
+    {
+      "title": "JAVA",
+      "author": "Nanda",
+      "isbn": "000-2",
+      "category": "Technology",
+      "copies": "7",
+      "available": 1,
+      "rating": 4,
+      "coverColor": "#90e0ef",
+      "year": 2026,
+      "totalCopies": 7,
+      "availableCopies": 7,
+      "publishedYear": 2026,
+      "_id": "bz7nzzwql",
+      "id": "a9mp5u98a",
+      "createdAt": "2026-04-23T13:15:52.574Z"
     }
   ],
   "transactions": [],
   "auditlogs": [
     {
-      "user": "System Admin",
+      "user": "Aarav Sharma",
       "action": "LOGIN",
-      "details": "Successful login from admin@lib.edu",
-      "_id": "l7zs576a4",
-      "id": "tq8ndstek",
-      "createdAt": "2026-04-22T05:45:10.368Z"
+      "details": "Successful login from aarav@lib.edu",
+      "_id": "qg97yeqdr",
+      "id": "t0opqyn18",
+      "createdAt": "2026-04-23T06:48:47.849Z"
+    },
+    {
+      "user": "Aarav Sharma",
+      "action": "LOGIN",
+      "details": "Successful login from aarav@lib.edu",
+      "_id": "94yg06yd0",
+      "id": "7q1msvurf",
+      "createdAt": "2026-04-23T06:56:19.540Z"
+    },
+    {
+      "user": "Aarav Sharma",
+      "action": "SECURITY",
+      "details": "Two-Factor Authentication ENABLED for Nexus account",
+      "_id": "a00w294x4",
+      "id": "5wqva4r17",
+      "createdAt": "2026-04-23T06:59:49.998Z"
     },
     {
       "user": "System Admin",
       "action": "LOGIN",
       "details": "Successful login from admin@lib.edu",
-      "_id": "3h54yvnu0",
-      "id": "3bjne4bna",
-      "createdAt": "2026-04-22T01:33:45.605Z"
+      "_id": "lin7aoo3a",
+      "id": "lxpbekyjs",
+      "createdAt": "2026-04-23T07:00:49.057Z"
+    },
+    {
+      "user": "Aarav Sharma",
+      "action": "LOGIN",
+      "details": "Successful login from aarav@lib.edu",
+      "_id": "pb2tpyw1u",
+      "id": "1c7x5ie0q",
+      "createdAt": "2026-04-23T07:32:34.166Z"
+    },
+    {
+      "user": "Rohan Das",
+      "action": "LOGIN",
+      "details": "Successful login from rohan@lib.edu",
+      "_id": "kha6618v4",
+      "id": "ac93yc7im",
+      "createdAt": "2026-04-23T07:39:02.473Z"
     },
     {
       "user": "System Admin",
       "action": "LOGIN",
       "details": "Successful login from admin@lib.edu",
-      "_id": "27zzxzu1e",
-      "id": "lvnpn10jp",
-      "createdAt": "2026-04-22T01:30:36.515Z"
+      "_id": "pjwdela1s",
+      "id": "srljjj8ih",
+      "createdAt": "2026-04-23T13:13:15.199Z"
+    },
+    {
+      "user": "Rohan Das",
+      "action": "LOGIN",
+      "details": "Successful login from rohan@lib.edu",
+      "_id": "hzgg0392a",
+      "id": "o7qny3bti",
+      "createdAt": "2026-04-23T13:18:02.330Z"
+    },
+    {
+      "user": "Rohan Das",
+      "action": "LOGIN",
+      "details": "Successful login from rohan@lib.edu",
+      "_id": "0rjqx9x6m",
+      "id": "7ca8scpl0",
+      "createdAt": "2026-04-23T13:37:44.423Z"
+    },
+    {
+      "user": "System Admin",
+      "action": "LOGIN",
+      "details": "Successful login from admin@lib.edu",
+      "_id": "w89rs81ep",
+      "id": "ticcy7bcb",
+      "createdAt": "2026-04-23T13:41:51.795Z"
+    },
+    {
+      "user": "Aarav Sharma",
+      "action": "LOGIN",
+      "details": "Successful login from aarav@lib.edu",
+      "_id": "e1unadrxs",
+      "id": "obt7p4nai",
+      "createdAt": "2026-04-23T13:56:09.683Z"
     },
     {
       "user": "Dr. Sarah",
       "action": "LOGIN",
       "details": "Successful login from teacher@lib.edu",
-      "_id": "v3saui6af",
-      "id": "9p605tz9g",
-      "createdAt": "2026-04-22T01:26:02.075Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "z1a0lrwek",
-      "id": "blb2zc82j",
-      "createdAt": "2026-04-22T05:46:49.583Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "fo64f02lm",
-      "id": "o3sqlpfy1",
-      "createdAt": "2026-04-22T05:46:50.298Z"
-    },
-    {
-      "user": "Random Student",
-      "action": "LOGIN",
-      "details": "Successful login from randomuser123@lib.edu",
-      "_id": "zo1pbylgq",
-      "id": "xhy05liyp",
-      "createdAt": "2026-04-22T13:24:29.206Z"
-    },
-    {
-      "user": "Real Student",
-      "action": "LOGIN",
-      "details": "Successful login from realstudent@lib.edu",
-      "_id": "ubn22vbq6",
-      "id": "3vk0kdgrv",
-      "createdAt": "2026-04-22T13:29:17.410Z"
-    },
-    {
-      "user": "System Admin",
-      "action": "LOGIN",
-      "details": "Successful login from admin@lib.edu",
-      "_id": "vfz26d9w0",
-      "id": "r0sq1u72m",
-      "createdAt": "2026-04-22T13:32:22.117Z"
-    },
-    {
-      "user": "System Admin",
-      "action": "LOGIN",
-      "details": "Successful login from admin@lib.edu",
-      "_id": "i7tmw5wbb",
-      "id": "6apz9s606",
-      "createdAt": "2026-04-22T13:32:55.622Z"
+      "_id": "8w8fw00yy",
+      "id": "a2dvnl0vr",
+      "createdAt": "2026-04-23T13:58:07.556Z"
     },
     {
       "user": "Rohan Das",
       "action": "LOGIN",
       "details": "Successful login from rohan@lib.edu",
-      "_id": "qz0mrqtot",
-      "id": "evhz0n1lz",
-      "createdAt": "2026-04-22T13:34:16.659Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "r40ftt2js",
-      "id": "7fmuz8naj",
-      "createdAt": "2026-04-22T14:01:18.932Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "n3xvc2rsb",
-      "id": "xjprofzjk",
-      "createdAt": "2026-04-22T14:05:53.014Z"
-    },
-    {
-      "user": "Rohan Das",
-      "action": "LOGIN",
-      "details": "Successful login from rohan@lib.edu",
-      "_id": "he04gfhop",
-      "id": "2nayctwn5",
-      "createdAt": "2026-04-22T14:20:19.141Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "4l5n67045",
-      "id": "2bv0orwbf",
-      "createdAt": "2026-04-22T14:21:00.091Z"
+      "_id": "audugn5gg",
+      "id": "zy0j0b3z2",
+      "createdAt": "2026-04-23T14:16:15.089Z"
     }
   ],
   "settings": {
@@ -220,7 +205,56 @@
     "studentLoanDays": 14,
     "facultyLoanDays": 30,
     "maxBooksPerStudent": 3,
-    "maxBooksPerFaculty": 5
+    "maxBooksPerFaculty": 5,
+    "maxBorrowDays": 14,
+    "maxBooksPerUser": 5,
+    "fineRatePerDay": 1,
+    "gracePeriodDays": 2,
+    "maxHoldDays": 7,
+    "defaultFineCurrency": "USD",
+    "maxReservationLimit": 5,
+    "autoRenewEnabled": true,
+    "enforceConditionChecks": true,
+    "autoNotifyOverdue": true,
+    "autoRestocking": false,
+    "enableDigitalLending": true,
+    "allowInterLibraryLoan": false,
+    "maintenanceMode": false,
+    "autoArchiveOldLogs": true,
+    "requireTwoFactorForStaff": false,
+    "facultyAllowSyllabusPublic": true,
+    "facultyAutoApproveBibliography": false,
+    "facultyNotifyStudentOnReading": true,
+    "facultyResearchPortalAccess": true,
+    "facultyGrantManagement": false,
+    "facultyCollaborativeAnnotating": true,
+    "facultyCustomDashboardLayout": false,
+    "facultyAutoRenewLimit": 3,
+    "facultyPriorityQueuing": true,
+    "facultyResourceExport": true,
+    "facultyPeerReviewSystem": false,
+    "studentAllowSelfRenew": true,
+    "studentNotifyDueSoon": true,
+    "defaultTimerMins": 25,
+    "dailyReadingGoal": 20,
+    "dailyReminderTime": 18,
+    "focusModeEnabled": false,
+    "publicReadingHistory": false,
+    "studentAutoRenew": false,
+    "readerDarkMode": false,
+    "autoAcceptGroups": false,
+    "emailForwarding": false,
+    "hapticEnabled": true,
+    "newsletterSub": false,
+    "betaAccess": false,
+    "highContrast": false,
+    "studentReadingChallenges": true,
+    "studentStudyRoomBooking": true,
+    "twoFactorEnabled": true,
+    "accentTheme": "rose",
+    "animations": true,
+    "emailNotifications": false,
+    "publicProfile": false
   },
   "syllabi": [],
   "bibliographies": [],

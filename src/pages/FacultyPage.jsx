@@ -10,7 +10,7 @@ import Bibliography from '../components/faculty/Bibliography';
 import SyllabusBuilder from '../components/faculty/SyllabusBuilder';
 import NexusCommLink from '../components/shared/NexusCommLink';
 import PersonnelManager from '../components/admin/PersonnelManager';
-import PortalSettings from '../components/shared/PortalSettings';
+import FacultySettings from '../components/faculty/FacultySettings';
 
 export default function FacultyPage() {
   return (
@@ -18,7 +18,7 @@ export default function FacultyPage() {
       <Routes>
         <Route index element={<FacultyDashboard />} />
         <Route path="users" element={<PersonnelManager manageableRoles={['student']} />} />
-        <Route path="settings" element={<PortalSettings />} />
+        <Route path="settings" element={<FacultySettings />} />
         <Route path="mybooks" element={<MyBooks />} />
         <Route path="browse" element={<BrowseBooks role="faculty" />} />
         <Route path="progress" element={<ReadingProgress />} />

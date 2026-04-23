@@ -204,6 +204,12 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  animation: formAppear 0.4s ease-out;
+}
+
+@keyframes formAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .field {
@@ -235,6 +241,79 @@
   background: rgba(123, 47, 255, 0.05);
 }
 
+.forgotLink {
+  background: none;
+  border: none;
+  color: rgba(0, 255, 200, 0.6);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: 4px;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.forgotLink:hover {
+  color: #00ffc8;
+  text-decoration: underline;
+}
+
+.roleGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  margin-top: 5px;
+}
+
+.roleCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.roleCard:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.roleCard.activeRole {
+  background: rgba(123, 47, 255, 0.1);
+  border-color: #7b2fff;
+  box-shadow: 0 0 20px rgba(123, 47, 255, 0.3);
+  animation: activeGlow 2s infinite ease-in-out;
+}
+
+@keyframes activeGlow {
+  0% { box-shadow: 0 0 10px rgba(123, 47, 255, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(123, 47, 255, 0.5); }
+  100% { box-shadow: 0 0 10px rgba(123, 47, 255, 0.2); }
+}
+
+.roleIcon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+}
+
+.roleName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.roleDesc {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
 .submitBtn {
   background: linear-gradient(to right, #7b2fff, #00ffc8);
   border: none;
@@ -254,6 +333,27 @@
   box-shadow: 0 10px 30px rgba(123, 47, 255, 0.4);
 }
 
+.submitBtnContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .backBtn {
   background: none;
   border: none;
@@ -269,7 +369,221 @@
   color: #00ffc8;
 }
 
+.authFooter {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.authFooter button {
+  background: none;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  color: #00ffc8;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.authFooter button:hover {
+  background: rgba(0, 255, 200, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 200, 0.2);
+  transform: translateY(-2px);
+}
+
+/* --- Cinematic Loading Overlay --- */
+.preloader {
+  position: fixed; 
+  inset: 0; 
+  background: #030510;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+  z-index: 99999;
+  transition: opacity 0.4s ease;
+}
+
+.cyberLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.glitchText {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  position: relative;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+
+.glitchText::before,
+.glitchText::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitchText::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitchText::after {
+  left: -2px;
+  text-shadow: -2px 0 #00fff9;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+.cyberBar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.2);
+}
+
+.cyberFill {
+  height: 100%;
+  background: #00ffc8;
+  width: 0%;
+  box-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc8;
+  animation: cyberLoad 2s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
+}
+
+.cyberDetails {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(0, 255, 200, 0.6);
+  letter-spacing: 0.1em;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(72px, 9999px, 83px, 0); }
+  20% { clip: rect(32px, 9999px, 43px, 0); }
+  40% { clip: rect(62px, 9999px, 23px, 0); }
+  60% { clip: rect(92px, 9999px, 43px, 0); }
+  80% { clip: rect(12px, 9999px, 53px, 0); }
+  100% { clip: rect(42px, 9999px, 63px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(12px, 9999px, 83px, 0); }
+  20% { clip: rect(92px, 9999px, 43px, 0); }
+  40% { clip: rect(32px, 9999px, 23px, 0); }
+  60% { clip: rect(62px, 9999px, 43px, 0); }
+  80% { clip: rect(82px, 9999px, 53px, 0); }
+  100% { clip: rect(22px, 9999px, 63px, 0); }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  10% { transform: skew(-5deg); }
+  20% { transform: skew(0deg); }
+  30% { transform: skew(5deg); }
+  40% { transform: skew(0deg); }
+  100% { transform: skew(0deg); }
+}
+
+@keyframes cyberLoad {
+  0% { width: 0%; }
+  40% { width: 60%; }
+  60% { width: 65%; }
+  80% { width: 95%; }
+  100% { width: 100%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (max-width: 992px) {
   .authGrid { grid-template-columns: 1fr; }
   .helperPanel { display: none; }
+}
+
+/* --- Pulse Scanner Animation --- */
+.pulseScanner {
+  position: relative;
+  height: 120px;
+  background: rgba(0, 255, 200, 0.03);
+  border: 1px solid rgba(0, 255, 200, 0.1);
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scannerGrid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 200, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 200, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+}
+
+.scannerLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00ffc8, transparent);
+  box-shadow: 0 0 15px #00ffc8;
+  animation: scan 3s infinite linear;
+  z-index: 2;
+}
+
+.scannerStatus {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  color: #00ffc8;
+  letter-spacing: 2px;
+  z-index: 3;
+  text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
+  animation: flicker 2s infinite;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  50% { top: 100%; }
+  100% { top: 0; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+  70% { opacity: 1; }
+  80% { opacity: 0.2; }
 }

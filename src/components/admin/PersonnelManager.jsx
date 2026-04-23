@@ -6,7 +6,7 @@ import styles from './PersonnelManager.module.css';
 const DEPARTMENTS = ['Computer Science', 'Mathematics', 'Physics', 'Chemistry', 'Library', 'Administration', 'Biology', 'English'];
 const getEmptyUser = (roles) => ({ name: '', email: '', role: roles[0], department: 'Computer Science', status: 'active' });
 
-export default function PersonnelManager({ manageableRoles = ['student', 'faculty', 'librarian'] }) {
+export default function PersonnelManager({ manageableRoles = ['student', 'faculty', 'custodian'] }) {
   const { users, dispatch, addToast, apiFetch } = useLibrary();
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('All');
@@ -15,7 +15,7 @@ export default function PersonnelManager({ manageableRoles = ['student', 'facult
   const [editId, setEditId] = useState(null);
 
   const stats = useMemo(() => {
-    const counts = { student: 0, faculty: 0, librarian: 0, admin: 0 };
+    const counts = { student: 0, faculty: 0, custodian: 0, admin: 0 };
     users.forEach(u => { if (counts[u.role] !== undefined) counts[u.role]++; });
     return counts;
   }, [users]);
@@ -59,11 +59,15 @@ export default function PersonnelManager({ manageableRoles = ['student', 'facult
   };
 
   const handleToggleStatus = async (u) => {
-    const newStatus = u.status === 'active' ? 'inactive' : 'active';
+    let newStatus = 'active';
+    if (u.status === 'active') newStatus = 'inactive';
+    else if (u.status === 'inactive') newStatus = 'active';
+    else if (u.status === 'pending') newStatus = 'active';
+
     try {
       const data = await apiFetch(`/users/${u.id}`, {
         method: 'PUT',
-        body: JSON.stringify({ ...u, isActive: newStatus === 'active' })
+        body: JSON.stringify({ ...u, isActive: newStatus === 'active', status: newStatus })
       });
       dispatch({ type: 'UPDATE_USER', user: { ...data.data, id: data.data._id || data.data.id } });
       addToast(`${u.name} is now ${newStatus}`, 'info');
@@ -84,7 +88,7 @@ export default function PersonnelManager({ manageableRoles = ['student', 'facult
     }
   };
 
-  const ROLE_COLOR = { student: '#00b4d8', faculty: '#7b2fff', librarian: '#00ffc8', admin: '#ff4d6d' };
+  const ROLE_COLOR = { student: '#00b4d8', faculty: '#7b2fff', custodian: '#00ffc8', admin: '#ff4d6d' };
 
   return (
     <div className={styles.page}>
@@ -101,8 +105,12 @@ export default function PersonnelManager({ manageableRoles = ['student', 'facult
         {manageableRoles.map(role => (
           <div key={role} className={styles.metricCard} style={{ '--c': ROLE_COLOR[role] }}>
             <div className={styles.metricHeader}>
-              <span className={styles.metricIcon}>{role === 'admin' ? '🛡️' : role === 'librarian' ? '📚' : role === 'faculty' ? '🧠' : '🎓'}</span>
-              <span className={styles.metricLabel}>{role}s</span>
+              <span className={styles.metricIcon}>{role === 'admin' ? '🛡️' : role === 'custodian' ? '📚' : role === 'faculty' ? '🧠' : '🎓'}</span>
+              <span className={styles.metricLabel}>
+                {role === 'custodian' ? 'Custodians' : 
+                 role === 'faculty' ? 'Faculties' : 
+                 role.charAt(0).toUpperCase() + role.slice(1) + 's'}
+              </span>
             </div>
             <div className={styles.metricValue}>{stats[role]}</div>
             <div className={styles.metricGlow} />
@@ -120,7 +128,7 @@ export default function PersonnelManager({ manageableRoles = ['student', 'facult
           {['All', ...manageableRoles].map(r => (
             <button key={r} className={`${styles.roleTab} ${roleFilter === r ? styles.active : ''}`}
               style={roleFilter === r ? { color: ROLE_COLOR[r] || '#00ffc8', borderColor: ROLE_COLOR[r] || '#00ffc8' } : {}}
-              onClick={() => setRoleFilter(r)}>{r}</button>
+              onClick={() => setRoleFilter(r)}>{r === 'All' ? 'All' : r === 'custodian' ? 'Custodian' : r.charAt(0).toUpperCase() + r.slice(1)}</button>
           ))}
         </div>
       </div>
@@ -154,24 +162,29 @@ export default function PersonnelManager({ manageableRoles = ['student', 'facult
                     </div>
                   </div>
                 </td>
-                <td><span className="badge" style={{ background: `${ROLE_COLOR[u.role]}20`, color: ROLE_COLOR[u.role], border: `1px solid ${ROLE_COLOR[u.role]}50` }}>{u.role}</span></td>
+                <td><span className="badge" style={{ background: `${ROLE_COLOR[u.role]}20`, color: ROLE_COLOR[u.role], border: `1px solid ${ROLE_COLOR[u.role]}50` }}>{u.role.charAt(0).toUpperCase() + u.role.slice(1)}</span></td>
                 <td>{u.department}</td>
                 <td>{u.joinDate ? new Date(u.joinDate).toLocaleDateString() : 'N/A'}</td>
                 <td>
                   <button 
-                    className={`${styles.statusBadge} ${styles[u.status]}`}
+                    className={`${styles.statusBadge} ${styles[u.status] || ''}`}
+                    style={u.status === 'pending' ? { background: 'rgba(255, 170, 0, 0.2)', color: '#ffaa00', borderColor: 'rgba(255, 170, 0, 0.5)' } : {}}
                     onClick={() => handleToggleStatus(u)}
-                    title="Click to toggle status"
+                    title={u.status === 'pending' ? "Click to approve" : "Click to toggle status"}
                   >
                     {u.status}
                   </button>
                 </td>
                 <td>
                   <div style={{ display: 'flex', gap: 6 }}>
+                    {u.status === 'pending' && (
+                      <button className="btn btn-primary btn-sm" style={{ background: '#00ffc8', color: '#050a1a', fontWeight: 'bold' }} onClick={() => handleToggleStatus(u)}>Approve</button>
+                    )}
                     <button className="btn btn-secondary btn-sm" onClick={() => openEdit(u)}>Edit</button>
                     <button className="btn btn-danger btn-sm" onClick={() => handleDelete(u)}>Remove</button>
                   </div>
                 </td>
+
               </tr>
             ))}
           </tbody>
@@ -195,7 +208,7 @@ export default function PersonnelManager({ manageableRoles = ['student', 'facult
             <div className="form-group">
               <label className="form-label">Role</label>
               <select className="form-select" value={form.role} onChange={e => setForm(f => ({...f, role: e.target.value}))} disabled={manageableRoles.length === 1}>
-                {manageableRoles.map(r => <option key={r}>{r}</option>)}
+                {manageableRoles.map(r => <option key={r} value={r}>{r === 'custodian' ? 'Custodian' : r}</option>)}
               </select>
             </div>
             <div className="form-group">

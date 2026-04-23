@@ -83,7 +83,7 @@ export default function IssueReturn() {
               <select className="form-select" value={issueUser} onChange={e => setIssueUser(e.target.value)} required>
                 <option value="">— Choose a member —</option>
                 {users.map(u => (
-                  <option key={u.id} value={u.id}>{u.name} ({u.role})</option>
+                  <option key={u.id} value={u.id}>{u.name} ({u.role === 'custodian' ? 'Custodian' : u.role})</option>
                 ))}
               </select>
             </div>

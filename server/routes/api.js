@@ -19,7 +19,7 @@ const SEED_BOOKS = [
 const SEED_USERS = [
   { id: 'u1', name: 'Aarav Sharma', email: 'aarav@lib.edu', role: 'student', department: 'Computer Science', joinDate: '2024-01-15', status: 'active' },
   { id: 'u2', name: 'Priya Mehta', email: 'priya@lib.edu', role: 'faculty', department: 'Mathematics', joinDate: '2023-08-01', status: 'active' },
-  { id: 'u3', name: 'Rohan Das', email: 'rohan@lib.edu', role: 'librarian', department: 'Library', joinDate: '2022-06-10', status: 'active' },
+  { id: 'u3', name: 'Rohan Das', email: 'rohan@lib.edu', role: 'custodian', department: 'Library', joinDate: '2022-06-10', status: 'active' },
   { id: 'u4', name: 'Sneha Patel', email: 'sneha@lib.edu', role: 'student', department: 'Physics', joinDate: '2024-03-20', status: 'active' },
   { id: 'u5', name: 'Vikram Nair', email: 'vikram@lib.edu', role: 'faculty', department: 'Chemistry', joinDate: '2023-07-15', status: 'active' },
 ];
@@ -160,6 +160,44 @@ router.delete('/users/:id', async (req, res) => {
     res.json({ message: 'User deleted' });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+/* ── Admin Operations ────────────────────────────────────────── */
+
+// PATCH /api/admin/approve/:id - Approve a pending user
+router.patch('/admin/approve/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!isDbConnected) {
+      const idx = memUsers.findIndex(u => u.id === id || u._id === id);
+      if (idx === -1) return res.status(404).json({ message: 'User not found' });
+      memUsers[idx] = { ...memUsers[idx], status: 'active', isActive: true };
+      return res.json({ success: true, data: memUsers[idx] });
+    }
+    const user = await User.findByIdAndUpdate(id, { status: 'active', isActive: true }, { new: true });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ success: true, data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// PATCH /api/admin/reject/:id - Reject a pending user
+router.patch('/admin/reject/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!isDbConnected) {
+      const idx = memUsers.findIndex(u => u.id === id || u._id === id);
+      if (idx === -1) return res.status(404).json({ message: 'User not found' });
+      memUsers[idx] = { ...memUsers[idx], status: 'rejected', isActive: false };
+      return res.json({ success: true, data: memUsers[idx] });
+    }
+    const user = await User.findByIdAndUpdate(id, { status: 'rejected', isActive: false }, { new: true });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ success: true, data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 

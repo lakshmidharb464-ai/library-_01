@@ -1,139 +1,278 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLibrary } from '../../contexts/LibraryContext';
-import styles from './LibrarySettings.module.css';
+import NexusToggle from '../common/NexusToggle';
+// Using the same stylesheet for consistent "premium" feel
+import styles from '../custodian/CustodianSettings.module.css';
 
 export default function LibrarySettings() {
   const { settings, updateSettings, addToast } = useLibrary();
-  const [form, setForm] = useState({ ...settings });
-  const [saved, setSaved] = useState(false);
 
-  const handleSave = async (e) => {
-    e.preventDefault();
+  const [localSettings, setLocalSettings] = useState({
+    libraryName: settings.libraryName || 'LibraNova Nexus',
+    finePerDay: settings.finePerDay || 1,
+    studentLoanDays: settings.studentLoanDays || 14,
+    facultyLoanDays: settings.facultyLoanDays || 30,
+    maxBooksPerStudent: settings.maxBooksPerStudent || 5,
+    maxBooksPerFaculty: settings.maxBooksPerFaculty || 10,
+    openTime: settings.openTime || '08:00',
+    closeTime: settings.closeTime || '20:00',
+  });
+
+  // Sync state if settings context loads later
+  useEffect(() => {
+    setLocalSettings(prev => ({
+      ...prev,
+      ...settings
+    }));
+  }, [settings]);
+
+  const handleToggle = async (key, label) => {
+    const newValue = !settings[key];
     try {
-      await updateSettings(form);
-      addToast('Settings saved successfully!', 'success');
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
-    } catch (err) {
-      // Error handled in updateSettings
-    }
+      await updateSettings({ [key]: newValue });
+      addToast(`${label} ${newValue ? 'Enabled' : 'Disabled'}`, 'success');
+    } catch (err) {}
   };
 
-  const reset = () => { setForm({ ...settings }); addToast('Changes discarded', 'info'); };
+  const handleInputChange = (e) => {
+    const { name, value, type } = e.target;
+    setLocalSettings(prev => ({ 
+      ...prev, 
+      [name]: type === 'number' ? (parseFloat(value) || 0) : value 
+    }));
+  };
 
-  const Field = ({ label, helpText, children }) => (
-    <div className={styles.field}>
-      <div className={styles.fieldLabel}>{label}</div>
-      {helpText && <div className={styles.fieldHelp}>{helpText}</div>}
-      <div className={styles.fieldControl}>{children}</div>
-    </div>
-  );
-
-  const Toggle = ({ value, onChange }) => (
-    <button type="button" className={`${styles.toggle} ${value ? styles.on : ''}`} onClick={() => onChange(!value)}>
-      <span className={styles.thumb} />
-    </button>
-  );
+  const saveSettings = async () => {
+    try {
+      await updateSettings(localSettings);
+      addToast('System configuration updated successfully.', 'success');
+    } catch (err) {}
+  };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.settingsContainer}>
       <div className={styles.header}>
-        <div>
-          <h2 className={styles.title}>Library Settings</h2>
-          <p className={styles.subtitle}>Configure system-wide parameters</p>
-        </div>
-        {saved && <div className={styles.savedBadge}>✓ Saved!</div>}
+        <h2 className={styles.title}>System Configuration</h2>
+        <p className={styles.subtitle}>Manage global library parameters, loan periods, and operating hours.</p>
       </div>
 
-      <form onSubmit={handleSave} className={styles.form}>
-        {/* General */}
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>🏛️ General</h3>
-          <div className={styles.grid2}>
-            <Field label="Library Name">
-              <input className="form-input" value={form.libraryName} onChange={e => setForm(f => ({ ...f, libraryName: e.target.value }))} />
-            </Field>
-            <Field label="Fine Per Day (₹)" helpText="Applied to all overdue books">
-              <input type="number" min={1} max={100} className="form-input" value={form.finePerDay} onChange={e => setForm(f => ({ ...f, finePerDay: +e.target.value }))} />
-            </Field>
+      <div className={styles.settingsGrid}>
+        
+        {/* Feature 1: Library Name */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>System Designation</h3>
+              <p className={styles.cardDesc}>The primary identification name for this library instance.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="text" 
+              name="libraryName"
+              className={styles.numInput} 
+              style={{ width: '160px', textAlign: 'left' }}
+              value={localSettings.libraryName} 
+              onChange={handleInputChange} 
+            />
           </div>
         </div>
 
-        {/* Loan Periods */}
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>📅 Loan Periods</h3>
-          <div className={styles.grid3}>
-            <Field label="Student Loan Days" helpText="Days before overdue">
-              <input type="number" min={7} max={60} className="form-input" value={form.studentLoanDays} onChange={e => setForm(f => ({ ...f, studentLoanDays: +e.target.value }))} />
-            </Field>
-            <Field label="Faculty Loan Days" helpText="Extended faculty access">
-              <input type="number" min={14} max={120} className="form-input" value={form.facultyLoanDays} onChange={e => setForm(f => ({ ...f, facultyLoanDays: +e.target.value }))} />
-            </Field>
-            <Field label="Max Books Per Student">
-              <input type="number" min={1} max={10} className="form-input" value={form.maxBooksPerStudent} onChange={e => setForm(f => ({ ...f, maxBooksPerStudent: +e.target.value }))} />
-            </Field>
-            <Field label="Max Books Per Faculty">
-              <input type="number" min={1} max={20} className="form-input" value={form.maxBooksPerFaculty} onChange={e => setForm(f => ({ ...f, maxBooksPerFaculty: +e.target.value }))} />
-            </Field>
+        {/* Feature 2: Fine Per Day */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Global Fine Rate (₹)</h3>
+              <p className={styles.cardDesc}>Standard penalty applied per day for overdue assets across all users.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="number" 
+              name="finePerDay"
+              className={styles.numInput} 
+              value={localSettings.finePerDay} 
+              onChange={handleInputChange} 
+              min="0" 
+            />
           </div>
         </div>
 
-        {/* Hours */}
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>🕐 Library Hours</h3>
-          <div className={styles.grid3}>
-            <Field label="Opening Time">
-              <input type="time" className="form-input" value={form.openTime} onChange={e => setForm(f => ({ ...f, openTime: e.target.value }))} />
-            </Field>
-            <Field label="Closing Time">
-              <input type="time" className="form-input" value={form.closeTime} onChange={e => setForm(f => ({ ...f, closeTime: e.target.value }))} />
-            </Field>
-            <Field label="Open on Weekends" helpText="Saturday & Sunday access">
-              <Toggle value={form.weekendOpen} onChange={v => setForm(f => ({ ...f, weekendOpen: v }))} />
-            </Field>
+        {/* Feature 3: Student Loan Days */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Student Loan Period</h3>
+              <p className={styles.cardDesc}>Maximum duration in days a student can borrow standard assets.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="number" 
+              name="studentLoanDays"
+              className={styles.numInput} 
+              value={localSettings.studentLoanDays} 
+              onChange={handleInputChange} 
+              min="1" 
+            />
           </div>
         </div>
 
-        {/* System */}
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>⚙️ System Preferences</h3>
-          <div className={styles.grid3}>
-            <Field label="Email Notifications" helpText="Send due-date reminders">
-              <Toggle value={form.emailNotifications} onChange={v => setForm(f => ({ ...f, emailNotifications: v }))} />
-            </Field>
-            <Field label="Auto Fine Calculation" helpText="Auto-calculate on return">
-              <Toggle value={form.autoFineCalculation} onChange={v => setForm(f => ({ ...f, autoFineCalculation: v }))} />
-            </Field>
+        {/* Feature 4: Faculty Loan Days */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Faculty Loan Period</h3>
+              <p className={styles.cardDesc}>Extended duration in days for faculty asset borrowing.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="number" 
+              name="facultyLoanDays"
+              className={styles.numInput} 
+              value={localSettings.facultyLoanDays} 
+              onChange={handleInputChange} 
+              min="1" 
+            />
           </div>
         </div>
 
-        {/* Live Preview */}
-        <div className={styles.preview}>
-          <h3 className={styles.sectionTitle}>📋 Current Configuration Preview</h3>
-          <div className={styles.previewGrid}>
-            {[
-              ['Library', form.libraryName],
-              ['Fine Rate', `₹${form.finePerDay}/day`],
-              ['Student Loan', `${form.studentLoanDays} days`],
-              ['Faculty Loan', `${form.facultyLoanDays} days`],
-              ['Max Books (Student)', form.maxBooksPerStudent],
-              ['Max Books (Faculty)', form.maxBooksPerFaculty],
-              ['Hours', `${form.openTime} – ${form.closeTime}`],
-              ['Weekends', form.weekendOpen ? 'Open' : 'Closed'],
-            ].map(([k, v]) => (
-              <div key={k} className={styles.previewItem}>
-                <span className={styles.previewKey}>{k}</span>
-                <span className={styles.previewVal}>{v}</span>
-              </div>
-            ))}
+        {/* Feature 5: Max Books Student */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Student Borrowing Limit</h3>
+              <p className={styles.cardDesc}>Maximum number of concurrent assets a student can hold.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="number" 
+              name="maxBooksPerStudent"
+              className={styles.numInput} 
+              value={localSettings.maxBooksPerStudent} 
+              onChange={handleInputChange} 
+              min="1" 
+            />
           </div>
         </div>
 
-        <div className={styles.formActions}>
-          <button type="button" className="btn btn-secondary" onClick={reset}>↺ Discard</button>
-          <button type="submit" className="btn btn-primary">💾 Save Settings</button>
+        {/* Feature 6: Max Books Faculty */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Faculty Borrowing Limit</h3>
+              <p className={styles.cardDesc}>Maximum number of concurrent assets a faculty member can hold.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="number" 
+              name="maxBooksPerFaculty"
+              className={styles.numInput} 
+              value={localSettings.maxBooksPerFaculty} 
+              onChange={handleInputChange} 
+              min="1" 
+            />
+          </div>
         </div>
-      </form>
+
+        {/* Feature 7: Open Time */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Daily Activation Time</h3>
+              <p className={styles.cardDesc}>Time when library systems and doors become operational.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="time" 
+              name="openTime"
+              className={styles.numInput} 
+              style={{ width: '120px' }}
+              value={localSettings.openTime} 
+              onChange={handleInputChange} 
+            />
+          </div>
+        </div>
+
+        {/* Feature 8: Close Time */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Daily Standby Time</h3>
+              <p className={styles.cardDesc}>Time when library systems transition to after-hours standby mode.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <input 
+              type="time" 
+              name="closeTime"
+              className={styles.numInput} 
+              style={{ width: '120px' }}
+              value={localSettings.closeTime} 
+              onChange={handleInputChange} 
+            />
+          </div>
+        </div>
+
+        {/* Feature 9: Weekend Operations */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Weekend Operations</h3>
+              <p className={styles.cardDesc}>Enable standard operating procedures on Saturdays and Sundays.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <NexusToggle 
+              isChecked={settings.weekendOpen || false} 
+              onChange={() => handleToggle('weekendOpen', 'Weekend Operations')} 
+            />
+          </div>
+        </div>
+
+        {/* Feature 10: Email Notifications */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Comm-Link Notifications</h3>
+              <p className={styles.cardDesc}>Automated dispatch of email reminders for due dates and holds.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <NexusToggle 
+              isChecked={settings.emailNotifications || false} 
+              onChange={() => handleToggle('emailNotifications', 'Comm-Link')} 
+            />
+          </div>
+        </div>
+
+        {/* Feature 11: Auto Fine Calculation */}
+        <div className={styles.settingCard}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Automated Fines</h3>
+              <p className={styles.cardDesc}>Automatically compute and apply penalty charges upon overdue returns.</p>
+            </div>
+          </div>
+          <div className={styles.controlWrap}>
+            <NexusToggle 
+              isChecked={settings.autoFineCalculation || false} 
+              onChange={() => handleToggle('autoFineCalculation', 'Automated Fines')} 
+            />
+          </div>
+        </div>
+
+      </div>
+
+      <div className={styles.saveBtnWrap}>
+        <button className="btn btn-primary" onClick={saveSettings}>
+          Commit Configuration
+        </button>
+      </div>
     </div>
   );
 }

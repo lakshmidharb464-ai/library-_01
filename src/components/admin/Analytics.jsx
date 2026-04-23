@@ -27,7 +27,7 @@ export default function Analytics() {
 
   const recentTransactions = [...transactions].sort((a, b) => new Date(b.issueDate || b.timestamp) - new Date(a.issueDate || a.timestamp)).slice(0, 6);
 
-  const ROLE_COLORS = { student: '#00b4d8', faculty: '#7b2fff', librarian: '#00ffc8', admin: '#ff4d6d' };
+  const ROLE_COLORS = { student: '#00b4d8', faculty: '#7b2fff', custodian: '#00ffc8', admin: '#ff4d6d' };
 
   return (
     <div className={styles.page}>
@@ -98,7 +98,7 @@ export default function Analytics() {
                   <div key={role} className={styles.roleBox} style={{ '--c': ROLE_COLORS[role] }}>
                     <div className={styles.rolePulse} />
                     <div className={styles.roleInfo}>
-                      <span className={styles.roleName}>{role}</span>
+                      <span className={styles.roleName}>{role === 'custodian' ? 'Custodian' : role}</span>
                       <span className={styles.rolePct}>{pct}%</span>
                     </div>
                     <div className={styles.roleValue}>{count}</div>

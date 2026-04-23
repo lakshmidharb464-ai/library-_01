@@ -1,23 +1,56 @@
 import { useLibrary } from '../../contexts/LibraryContext';
 import TelemetryHUD from '../shared/TelemetryHUD';
+import SystemHealthChart from './SystemHealthChart';
 import styles from './AdminDashboard.module.css';
 
 const STAT_CONFIG = [
-  { key: 'totalBooks',   label: 'Total Books',    icon: '📚', color: '#00ffc8', max: 100 },
-  { key: 'totalUsers',   label: 'Total Members',  icon: '👥', color: '#7b2fff', max: 50 },
-  { key: 'activeIssues', label: 'Active Issues',  icon: '📤', color: '#00b4d8', max: 20 },
-  { key: 'overdueCount', label: 'Overdue',        icon: '⚠️', color: '#ff4d6d', max: 10 },
-  { key: 'pendingFines', label: 'Pending Fines',  icon: '💰', color: '#ffd700', max: 1000 },
-  { key: 'pendingRecommendations', label: 'Requests', icon: '💡', color: '#ffbe0b', max: 10 },
+  { key: 'totalBooks',   label: 'Archive Assets',    icon: '📚', color: '#00ffc8', max: 100 },
+  { key: 'totalUsers',   label: 'Authorized Entities',  icon: '👥', color: '#7b2fff', max: 50 },
+  { key: 'activeIssues', label: 'Active Protocols',  icon: '📤', color: '#00b4d8', max: 20 },
+  { key: 'overdueCount', label: 'Breach Protocols',  icon: '⚠️', color: '#ff4d6d', max: 10 },
+  { key: 'pendingFines', label: 'Fiscal Drift',      icon: '💰', color: '#ffd700', max: 1000 },
+  { key: 'pendingRecommendations', label: 'Asset Requests', icon: '💡', color: '#ffbe0b', max: 10 },
+  { key: 'systemSync',   label: 'System Sync',       icon: '📡', color: '#00ffc8', max: 100 },
 ];
 
 export default function AdminDashboard() {
-  const { getStats, transactions, books, users, currentUser } = useLibrary();
+  const { getStats, transactions, books, users, currentUser, systemStatus, auditLogs } = useLibrary();
   const stats = getStats();
 
   const recentTx = [...transactions]
     .sort((a, b) => new Date(b.issueDate) - new Date(a.issueDate))
     .slice(0, 6);
+
+  // Process real telemetry from auditLogs
+  const processTelemetry = () => {
+    const logs = [...auditLogs || []].reverse();
+    if (logs.length === 0) return { load: [0, 0, 0, 0, 0, 0, 0], security: [100, 100, 100, 100, 100, 100, 100] };
+
+    // Group logs into 7 buckets (e.g., last 7 days or sessions)
+    const buckets = 7;
+    const loadTrend = new Array(buckets).fill(0);
+    const securityTrend = new Array(buckets).fill(100);
+
+    const logCount = logs.length;
+    const bucketSize = Math.max(1, Math.floor(logCount / buckets));
+
+    for (let i = 0; i < buckets; i++) {
+      const start = i * bucketSize;
+      const end = Math.min((i + 1) * bucketSize, logCount);
+      const bucketLogs = logs.slice(start, end);
+      
+      // Load = normalized count of logs in this bucket
+      loadTrend[i] = Math.min(100, Math.round((bucketLogs.length / (bucketSize || 1)) * 50 + 20));
+      
+      // Security = 100 - (percentage of 'SECURITY' alerts in this bucket)
+      const securityAlerts = bucketLogs.filter(l => l.action === 'SECURITY' && (l.details.toLowerCase().includes('failed') || l.details.toLowerCase().includes('breach'))).length;
+      securityTrend[i] = Math.max(0, 100 - Math.round((securityAlerts / (bucketLogs.length || 1)) * 100));
+    }
+
+    return { loadTrend, securityTrend };
+  };
+
+  const { loadTrend, securityTrend } = processTelemetry();
 
   return (
     <div className={`${styles.dashboard} animate-fade-in`}>
@@ -39,10 +72,18 @@ export default function AdminDashboard() {
       <TelemetryHUD 
         metrics={STAT_CONFIG.map(cfg => ({
           ...cfg,
-          val: cfg.key === 'pendingFines' ? `₹${stats[cfg.key]}` : stats[cfg.key],
-          cAlpha: `${cfg.color}22` // increased opacity for the flare
+          val: cfg.key === 'pendingFines' ? `₹${stats[cfg.key]}` : 
+               cfg.key === 'systemSync' ? stats.onlineStatus.toUpperCase() : 
+               stats[cfg.key],
+          cAlpha: `${cfg.color}22` 
         }))} 
       />
+
+      {/* Advanced Telemetry Section */}
+      <div className={styles.telemetryGrid}>
+        <SystemHealthChart data={loadTrend} label="Neural Load Telemetry" color="#00ffc8" />
+        <SystemHealthChart data={securityTrend} label="Security Integrity Sync" color="#7b2fff" />
+      </div>
 
       {/* Lower Dashboard Grid */}
       <div className={styles.lowerGrid}>

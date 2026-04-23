@@ -1,24 +1,24 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import PageShell from '../components/common/PageShell';
-import LibrarianDashboard from '../components/librarian/LibrarianDashboard';
-import IssueReturn from '../components/librarian/IssueReturn';
-import FinesEngine from '../components/librarian/FinesEngine';
-import ReportsHub from '../components/librarian/ReportsHub';
-import Recommendations from '../components/librarian/Recommendations';
-import Reservations from '../components/librarian/Reservations';
-import BookCondition from '../components/librarian/BookCondition';
-import LibraryEvents from '../components/librarian/LibraryEvents';
+import CustodianDashboard from '../components/custodian/CustodianDashboard';
+import IssueReturn from '../components/custodian/IssueReturn';
+import FinesEngine from '../components/custodian/FinesEngine';
+import ReportsHub from '../components/custodian/ReportsHub';
+import Recommendations from '../components/custodian/Recommendations';
+import Reservations from '../components/custodian/Reservations';
+import BookCondition from '../components/custodian/BookCondition';
+import LibraryEvents from '../components/custodian/LibraryEvents';
 import NexusCommLink from '../components/shared/NexusCommLink';
 import PersonnelManager from '../components/admin/PersonnelManager';
-import PortalSettings from '../components/shared/PortalSettings';
+import CustodianSettings from '../components/custodian/CustodianSettings';
 
-export default function LibrarianPage() {
+export default function CustodianPage() {
   return (
-    <PageShell role="librarian">
+    <PageShell role="custodian">
       <Routes>
-        <Route index element={<LibrarianDashboard />} />
+        <Route index element={<CustodianDashboard />} />
         <Route path="users" element={<PersonnelManager manageableRoles={['student', 'faculty']} />} />
-        <Route path="settings" element={<PortalSettings />} />
+        <Route path="settings" element={<CustodianSettings />} />
         <Route path="issue" element={<IssueReturn />} />
         <Route path="reservations" element={<Reservations />} />
         <Route path="fines" element={<FinesEngine />} />
@@ -27,7 +27,7 @@ export default function LibrarianPage() {
         <Route path="events" element={<LibraryEvents />} />
         <Route path="comms" element={<NexusCommLink />} />
         <Route path="recommendations" element={<Recommendations />} />
-        <Route path="*" element={<Navigate to="/librarian" replace />} />
+        <Route path="*" element={<Navigate to="/custodian" replace />} />
       </Routes>
     </PageShell>
   );

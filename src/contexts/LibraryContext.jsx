@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback, useState } from 'react';
 
 /* ── Constants & Configuration ───────────────────────────────────── */
-export const API_BASE = 'http://localhost:5000/api';
+export const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
 const STORAGE_KEY = 'LIBRANOVA_AUTH';
 
 export const DEMO_ACCOUNTS = [
-  { role: 'admin',     label: 'Admin',     name: 'System Admin', email: 'admin@lib.edu', universityId: 'ADM-001', password: 'demo123', color: '#ff4d6d' },
-  { role: 'librarian', label: 'Librarian', name: 'Rohan Das',    email: 'rohan@lib.edu', universityId: 'LIB-001', password: 'demo123', color: '#00ffc8' },
-  { role: 'student',   label: 'Student',   name: 'Aarav Sharma', email: 'aarav@lib.edu', universityId: 'STU-001', password: 'demo123', color: '#00b4d8' },
-  { role: 'faculty',   label: 'Faculty',   name: 'Priya Mehta',  email: 'priya@lib.edu', universityId: 'FAC-001', password: 'demo123', color: '#7b2fff' },
+  { role: 'admin',     label: 'Nexus Admin',     name: 'System Admin', email: 'admin@lib.edu', universityId: 'ADM-001', password: 'demo123', color: '#ff4d6d', department: 'IT Operations' },
+  { role: 'custodian', label: 'Nexus Custodian', name: 'Rohan Das',    email: 'rohan@lib.edu', universityId: 'LIB-001', password: 'demo123', color: '#00ffc8', department: 'Central Archive' },
+  { role: 'student',   label: 'Nexus Student',   name: 'Aarav Sharma', email: 'aarav@lib.edu', universityId: 'STU-001', password: 'demo123', color: '#00b4d8', department: 'Computer Science' },
+  { role: 'faculty',   label: 'Nexus Faculty',   name: 'Priya Mehta',  email: 'priya@lib.edu', universityId: 'FAC-001', password: 'demo123', color: '#7b2fff', department: 'Applied Physics' },
 ];
 
 const INITIAL_SETTINGS = {
@@ -50,7 +50,7 @@ const savedAuth = getInitialAuth();
 
 const INITIAL_STATE = {
   books: [],
-  users: [],
+  users: DEMO_ACCOUNTS.map((a, i) => ({ ...a, id: `u${i+1}`, status: 'active' })),
   transactions: [],
   announcements: [
     { id: '1', title: 'System Maintenance', content: 'Scheduled maintenance this Sunday at 02:00 UTC.', date: new Date().toISOString(), important: true },
@@ -222,19 +222,52 @@ export function LibraryProvider({ children }) {
   // Sync Settings to Body
   useEffect(() => {
     const body = document.body;
-    body.className = '';
+    
+    // Theme & Layout
+    body.classList.remove('theme-emerald', 'theme-nebula', 'theme-ocean', 'theme-rose', 'theme-amber', 'ui-compact');
     if (state.settings.accentTheme) body.classList.add(`theme-${state.settings.accentTheme}`);
     if (state.settings.uiCompact) body.classList.add('ui-compact');
+
+    // Visual Effects
+    body.classList.toggle('animations-disabled', !state.settings.animations);
+    body.classList.toggle('haptic-active', state.settings.haptic);
+
+    // Dynamic Overlays (Scanlines & Noise)
+    // We handle overlays by adding/removing specific overlay divs or using body classes
+    let scanOverlay = document.getElementById('nexus-scanlines');
+    if (state.settings.scanlines) {
+      if (!scanOverlay) {
+        scanOverlay = document.createElement('div');
+        scanOverlay.id = 'nexus-scanlines';
+        scanOverlay.className = 'scanlines-overlay';
+        document.body.appendChild(scanOverlay);
+      }
+    } else if (scanOverlay) {
+      scanOverlay.remove();
+    }
+
+    let noiseOverlay = document.getElementById('nexus-noise');
+    if (state.settings.noiseOverlay) {
+      if (!noiseOverlay) {
+        noiseOverlay = document.createElement('div');
+        noiseOverlay.id = 'nexus-noise';
+        noiseOverlay.className = 'noise-overlay';
+        document.body.appendChild(noiseOverlay);
+      }
+    } else if (noiseOverlay) {
+      noiseOverlay.remove();
+    }
   }, [state.settings]);
 
   // Fetch Initial Data
   const fetchData = useCallback(async () => {
     try {
-      const [booksData, healthData, usersData, txData, auditData, settingsData, syllabiData, bibData, progData, recData] = await Promise.all([
+      const [booksData, healthData, usersData, txData, statsData, auditData, settingsData, syllabiData, bibData, progData, recData] = await Promise.all([
         apiFetch('/books'),
         apiFetch('/status').catch(() => ({ success: true, message: 'Fallback', data: {} })),
         apiFetch('/users').catch(() => ({ success: true, data: [] })),
         apiFetch('/transactions').catch(() => ({ success: true, data: [] })),
+        apiFetch('/transactions/stats').catch(() => ({ success: true, data: {} })),
         apiFetch('/audit').catch(() => ({ success: true, data: [] })),
         apiFetch('/settings').catch(() => ({ success: true, data: INITIAL_SETTINGS })),
         apiFetch('/faculty/syllabi').catch(() => ({ success: true, data: [] })),
@@ -254,7 +287,7 @@ export function LibraryProvider({ children }) {
       const mapUser = (u) => ({
         ...u,
         id: u._id || u.id,
-        status: u.isActive ? 'active' : 'inactive'
+        status: u.status || (u.isActive ? 'active' : 'pending')
       });
 
       const mapTx = (t) => ({
@@ -273,6 +306,7 @@ export function LibraryProvider({ children }) {
           books: (booksData.data || []).map(mapBook),
           users: (usersData.data || []).map(mapUser),
           transactions: (txData.data || []).map(mapTx),
+          stats: statsData.data || {}, // Server-side stats
           auditLogs: auditData.data || [],
           settings: settingsData.data || INITIAL_SETTINGS,
           syllabi: (syllabiData?.data || []).map(s => ({ ...s, id: s._id || s.id })),
@@ -302,6 +336,10 @@ export function LibraryProvider({ children }) {
         body: JSON.stringify(credentials),
       });
       
+      if (response.twoFactorRequired) {
+        return response; // Return the full response so AuthPage can handle 2FA
+      }
+
       const { token, data: user } = response;
       const role = user?.role;
       
@@ -325,7 +363,7 @@ export function LibraryProvider({ children }) {
         body: JSON.stringify(userData),
       });
 
-      addToast('System Access Initialized. Please login.', 'success');
+      addToast('Account created successfully. Pending admin approval.', 'success');
       return data.success;
     } catch (err) {
       addToast(err.message, 'error');
@@ -333,6 +371,59 @@ export function LibraryProvider({ children }) {
     }
   }, [addToast, apiFetch]);
 
+
+  // Change Password
+  const changePassword = useCallback(async (currentPassword, newPassword) => {
+    try {
+      const response = await apiFetch('/users/profile/security', {
+        method: 'PUT',
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      addToast('Security credentials updated successfully', 'success');
+      return response;
+    } catch (err) {
+      addToast(err.message, 'error');
+      throw err;
+    }
+  }, [apiFetch, addToast]);
+  
+  // Search Books (Backend-powered)
+  const searchBooks = useCallback(async (query) => {
+    try {
+      const res = await apiFetch(`/books/search?q=${encodeURIComponent(query)}`);
+      return (res.data || []).map(b => ({
+        ...b,
+        id: b._id || b.id,
+        available: b.availableCopies ?? b.available,
+        year: b.publishedYear || b.year
+      }));
+    } catch (err) {
+      console.error('Search error:', err);
+      return [];
+    }
+  }, [apiFetch]);
+
+  // Verify 2FA
+  const verify2fa = useCallback(async (userId, code) => {
+    try {
+      const response = await apiFetch('/auth/verify-2fa', {
+        method: 'POST',
+        body: JSON.stringify({ userId, code }),
+      });
+      
+      const { token, data: user } = response;
+      const role = user?.role;
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token, role }));
+      dispatch({ type: 'SET_AUTH', user, role });
+      addToast(`Nexus Pulse Verified. Welcome, ${user.name}.`, 'success');
+      fetchData();
+      return user;
+    } catch (err) {
+      addToast(err.message, 'error');
+      throw err;
+    }
+  }, [addToast, fetchData, apiFetch]);
 
   // Logout
   const logout = useCallback(async () => {
@@ -343,21 +434,6 @@ export function LibraryProvider({ children }) {
     localStorage.removeItem(STORAGE_KEY);
     addToast('Logged out successfully', 'info');
   }, [addToast, apiFetch]);
-
-  // Update Settings
-  const updateSettings = useCallback(async (newSettings) => {
-    try {
-      const response = await apiFetch('/settings', {
-        method: 'PUT',
-        body: JSON.stringify(newSettings),
-      });
-      dispatch({ type: 'UPDATE_SETTINGS', settings: response.data });
-      return response.data;
-    } catch (err) {
-      addToast(`Settings Sync Failed: ${err.message}`, 'error');
-      throw err;
-    }
-  }, [apiFetch, addToast]);
 
   // calculateFine Helper
   const calculateFine = useCallback((dueDate) => {
@@ -373,15 +449,17 @@ export function LibraryProvider({ children }) {
 
   // Computed Helpers
   const getStats = useCallback(() => {
+    const sStats = state.stats || {};
     const books = state.books || [];
     const users = state.users || [];
     const transactions = state.transactions || [];
-    const activeIssues = transactions.filter(t => t.status === 'Issued' || t.status === 'Overdue').length;
-    const overdueCount = transactions.filter(t => t.status === 'Overdue' || (t.status === 'Issued' && new Date(t.dueDate) < new Date())).length;
+    
+    const activeIssues = sStats.active ?? transactions.filter(t => t.status === 'Issued' || t.status === 'Overdue').length;
+    const overdueCount = sStats.overdue ?? transactions.filter(t => t.status === 'Overdue' || (t.status === 'Issued' && new Date(t.dueDate) < new Date())).length;
     
     return {
-      totalBooks: books.length,
-      totalUsers: users.length,
+      totalBooks: sStats.totalBooks || books.length,
+      totalUsers: sStats.totalUsers || users.length,
       activeIssues,
       overdueCount,
       availableBooks: books.reduce((sum, b) => sum + (b.available || 0), 0),
@@ -390,6 +468,20 @@ export function LibraryProvider({ children }) {
       pendingFines: 0 
     };
   }, [state]);
+
+  // Update Settings
+  const updateSettings = useCallback(async (newSettings) => {
+    try {
+      await apiFetch('/settings', {
+        method: 'PUT',
+        body: JSON.stringify(newSettings),
+      });
+      dispatch({ type: 'UPDATE_SETTINGS', settings: newSettings });
+      addToast('Settings updated successfully', 'success');
+    } catch (err) {
+      addToast(err.message, 'error');
+    }
+  }, [apiFetch, addToast]);
 
   const value = {
     ...state,
@@ -401,8 +493,15 @@ export function LibraryProvider({ children }) {
     logout,
     fetchData,
     updateSettings,
+    changePassword,
+    verify2fa,
+    searchBooks,
     getStats,
     calculateFine,
+    userAuditLogs: state.auditLogs.filter(log => 
+      log.user === state.currentUser?.name || 
+      (log.details && state.currentUser?.email && log.details.includes(state.currentUser.email))
+    ),
     dispatch,
     apiFetch,
   };

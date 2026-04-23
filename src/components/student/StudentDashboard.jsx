@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLibrary } from '../../contexts/LibraryContext';
 import TelemetryHUD from '../shared/TelemetryHUD';
@@ -22,16 +23,30 @@ export default function StudentDashboard() {
   const metrics = [
     { label: 'Active Protocols', val: active.length, max: 3, color: '#00ffc8', cAlpha: 'rgba(0,255,200,0.2)', icon: '📚' },
     { label: 'Warning Phase', val: dueSoon.length, max: 3, color: '#ffbe0b', cAlpha: 'rgba(255,190,11,0.2)', icon: '⏰' },
-    { label: 'System Breach', val: overdue.length, max: 2, color: '#ff4d6d', cAlpha: 'rgba(255,77,109,0.2)', icon: '⚠️' },
+    { label: 'Breach Protocols', val: overdue.length, max: 2, color: '#ff4d6d', cAlpha: 'rgba(255,77,109,0.2)', icon: '⚠️' },
     { 
       label: 'System Sync', 
-      val: systemStatus?.online ? (systemStatus?.dbConnected ? 'ONLINE' : 'DEGRADED') : 'OFFLINE', 
+      val: systemStatus?.online ? (systemStatus?.dbConnected ? 'OPTIMAL' : 'DEGRADED') : 'OFFLINE', 
       max: 100, 
       color: systemStatus?.online ? (systemStatus?.dbConnected ? '#00ffc8' : '#ffbe0b') : '#ff4d6d', 
       cAlpha: systemStatus?.online ? (systemStatus?.dbConnected ? 'rgba(0,255,200,0.2)' : 'rgba(255,190,11,0.2)') : 'rgba(255,77,109,0.2)', 
       icon: '🕸️' 
     },
   ];
+
+  const [telemetryLogs, setTelemetryLogs] = useState([
+    { time: '08:42:11', msg: `AUTHENTICATION_SUCCESS: User ${currentUser?.name} synchronized.` },
+    { time: '08:42:12', msg: 'SECTOR_CHECK: All archival buffers optimal.' },
+    { time: '08:42:15', msg: active.length > 0 ? `LINK_ESTABLISHED: ${active.length} active asset pulses detected.` : 'IDLE_MODE: No active asset pulses.' },
+    { time: '08:42:20', msg: `NEXUS_SYNC: Database connectivity ${systemStatus?.dbConnected ? 'STABLE' : 'LOCAL_REDUNDANCY'}.` }
+  ]);
+
+  const triggerPulse = () => {
+    const now = new Date();
+    const time = now.toTimeString().split(' ')[0];
+    const newLog = { time, msg: `NEXUS_PULSE: Manual synchronization triggered. Latency: ${Math.floor(Math.random() * 50)}ms` };
+    setTelemetryLogs(prev => [newLog, ...prev].slice(0, 10));
+  };
 
   return (
     <div className={styles.nexus}>
@@ -142,6 +157,25 @@ export default function StudentDashboard() {
           )}
         </section>
       </main>
+
+      <section className={`${styles.logsPanel} glass-card`}>
+        <div className={styles.logsHeader}>
+          <div className={styles.logsTitleWrapper}>
+            <span className={styles.logsTitle}>SYSTEM TELEMETRY LOGS</span>
+            <span className={styles.logsStatus}>ONLINE</span>
+          </div>
+          <button className={styles.pulseBtn} onClick={triggerPulse}>
+            TRIGGER TEST PULSE
+          </button>
+        </div>
+        <div className={styles.logsContainer}>
+          {telemetryLogs.map((log, i) => (
+            <div key={i} className={styles.logItem}>
+              <span className={styles.logTime}>[{log.time}]</span> {log.msg}
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

@@ -59,7 +59,7 @@ export default function AcquisitionRecommender() {
           <span className={styles.checkIcon}>✓</span>
           <div className={styles.successText}>
             <strong>Recommendation Transmitted</strong>
-            <p>Your request has been queued for Librarian review.</p>
+            <p>Your request has been queued for Custodian review.</p>
           </div>
         </div>
       )}

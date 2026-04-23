@@ -21,31 +21,122 @@
   cursor: pointer; border-radius: 6px;
   transition: all 0.2s;
 }
-.skipBtn:hover {
-  border-color: rgba(0,255,200,0.4);
-  color: rgba(0,255,200,0.8);
-  background: rgba(0,255,200,0.05);
+.cyberLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
 }
-.loaderLogo {
-  width: 120px; height: 120px; margin-bottom: 30px;
-  animation: pulseLogo 2s infinite alternate ease-in-out;
+
+.glitchText {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  position: relative;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
 }
-.logoSvg { width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(0,255,200,0.5)); }
-.logoSvg polygon { stroke-dasharray: 300; stroke-dashoffset: 300; animation: drawPoly 2s forwards ease-out; }
-.logoSvg text { opacity: 0; animation: fadeInText 1s 1.5s forwards; }
 
-.loaderText { font-family: 'Orbitron', monospace; color: #00ffc8; font-size: 0.8rem; letter-spacing: 0.2em; margin-bottom: 12px; opacity: 0.8; }
-.loaderBar { width: 300px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
-.loaderFill { height: 100%; background: linear-gradient(90deg, #00ffc8, #7b2fff); width: 0%; animation: fillBar 2.5s forwards cubic-bezier(0.8, 0, 0.2, 1); }
+.glitchText::before,
+.glitchText::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
-@keyframes drawPoly { to { stroke-dashoffset: 0; } }
-@keyframes fadeInText { to { opacity: 1; } }
-@keyframes fillBar { to { width: 100%; } }
-@keyframes pulseLogo { from { transform: scale(0.95); } to { transform: scale(1.05); } }
+.glitchText::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitchText::after {
+  left: -2px;
+  text-shadow: -2px 0 #00fff9;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+.cyberBar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.2);
+}
+
+.cyberFill {
+  height: 100%;
+  background: #00ffc8;
+  width: 0%;
+  box-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc8;
+  animation: cyberLoad 3s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
+}
+
+.cyberDetails {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(0, 255, 200, 0.6);
+  letter-spacing: 0.1em;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(72px, 9999px, 83px, 0); }
+  20% { clip: rect(32px, 9999px, 43px, 0); }
+  40% { clip: rect(62px, 9999px, 23px, 0); }
+  60% { clip: rect(92px, 9999px, 43px, 0); }
+  80% { clip: rect(12px, 9999px, 53px, 0); }
+  100% { clip: rect(42px, 9999px, 63px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(12px, 9999px, 83px, 0); }
+  20% { clip: rect(92px, 9999px, 43px, 0); }
+  40% { clip: rect(32px, 9999px, 23px, 0); }
+  60% { clip: rect(62px, 9999px, 43px, 0); }
+  80% { clip: rect(82px, 9999px, 53px, 0); }
+  100% { clip: rect(22px, 9999px, 63px, 0); }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  10% { transform: skew(-5deg); }
+  20% { transform: skew(0deg); }
+  30% { transform: skew(5deg); }
+  40% { transform: skew(0deg); }
+  100% { transform: skew(0deg); }
+}
+
+@keyframes cyberLoad {
+  0% { width: 0%; }
+  40% { width: 60%; }
+  60% { width: 65%; }
+  80% { width: 95%; }
+  100% { width: 100%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 /* Background Video */
 .bgVideo {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0; width: 100%; height: 100vh;
   object-fit: cover;
   z-index: 0;
@@ -53,7 +144,7 @@
   mix-blend-mode: screen;
 }
 .videoOverlay {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0; width: 100%; height: 100vh;
   background: linear-gradient(to bottom, rgba(3,5,16,0.4) 0%, rgba(3,5,16,0.7) 60%, var(--bg-dark) 100%);
   z-index: 1;

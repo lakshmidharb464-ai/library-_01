@@ -727,6 +727,93 @@ h1, h2, h3, h4, h5 {
 [data-tooltip]:hover::after { opacity: 1; }
 
 /* ============================================
+   CINEMATIC OVERLAYS & GLOBAL EFFECTS
+   ============================================ */
+
+/* Scanlines Overlay */
+.scanlines-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+/* Noise / Grain Overlay */
+.noise-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url('http://assets.iceablethemes.com/img/noise-transparent.png') repeat 0 0;
+  background-repeat: repeat;
+  animation: noise-shift 0.2s infinite;
+  opacity: 0.04;
+  visibility: visible;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+@keyframes noise-shift {
+  0% { transform: translate(0,0) }
+  10% { transform: translate(-5%,-5%) }
+  20% { transform: translate(-10%,5%) }
+  30% { transform: translate(5%,-10%) }
+  40% { transform: translate(-5%,15%) }
+  50% { transform: translate(-10%,5%) }
+  60% { transform: translate(15%,0) }
+  70% { transform: translate(0,10%) }
+  80% { transform: translate(-15%,0) }
+  90% { transform: translate(10%,5%) }
+  100% { transform: translate(5%,0) }
+}
+
+/* Theme-Specific Root Overrides */
+body.theme-emerald { --accent-primary: #00ffc8; --accent-glow: rgba(0, 255, 200, 0.4); }
+body.theme-nebula  { --accent-primary: #7b2fff; --accent-glow: rgba(123, 47, 255, 0.4); }
+body.theme-ocean   { --accent-primary: #00b4d8; --accent-glow: rgba(0, 180, 216, 0.4); }
+body.theme-rose    { --accent-primary: #ff4d6d; --accent-glow: rgba(255, 77, 109, 0.4); }
+body.theme-amber   { --accent-primary: #ffbe0b; --accent-glow: rgba(255, 190, 11, 0.4); }
+
+/* Animation Controls */
+body.animations-disabled *,
+body.animations-disabled *::before,
+body.animations-disabled *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Haptic Pulse Animation */
+@keyframes haptic-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+.haptic-active button:active,
+.haptic-active .btn:active,
+.haptic-active a:active,
+.haptic-active input[type="submit"]:active {
+  animation: haptic-pulse 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {

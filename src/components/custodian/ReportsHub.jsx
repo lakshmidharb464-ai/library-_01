@@ -18,10 +18,10 @@ export default function ReportsHub() {
       {/* Summary Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px,1fr))', gap: 14 }}>
         {[
-          { label: 'Total Issues', val: issued.length, color: '#00b4d8' },
-          { label: 'Total Returns', val: returned.length, color: '#00ffc8' },
-          { label: 'Overdue', val: overdue.length, color: '#ff4d6d' },
-          { label: 'Fines Collected', val: `₹${totalFines}`, color: '#ffd700' },
+          { label: 'Asset Dispatches', val: issued.length, color: '#00b4d8' },
+          { label: 'Archive Syncs', val: returned.length, color: '#00ffc8' },
+          { label: 'Breach Protocols', val: overdue.length, color: '#ff4d6d' },
+          { label: 'Fiscal Drift Recovery', val: `₹${totalFines}`, color: '#ffd700' },
         ].map(s => (
           <div key={s.label} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: 18 }}>
             <div style={{ fontFamily: 'Orbitron', fontSize: '1.6rem', fontWeight: 800, color: s.color }}>{s.val}</div>

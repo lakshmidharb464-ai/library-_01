@@ -10,14 +10,14 @@ import ReadingGoals from '../components/student/ReadingGoals';
 import StudyTimer from '../components/student/StudyTimer';
 import PeerStudyGroups from '../components/student/PeerStudyGroups';
 import NexusCommLink from '../components/shared/NexusCommLink';
-import PortalSettings from '../components/shared/PortalSettings';
+import StudentSettings from '../components/student/StudentSettings';
 
 export default function StudentPage() {
   return (
     <PageShell role="student">
       <Routes>
         <Route index element={<StudentDashboard />} />
-        <Route path="settings" element={<PortalSettings />} />
+        <Route path="settings" element={<StudentSettings />} />
         <Route path="mybooks" element={<StudentMyBooks />} />
         <Route path="browse" element={<BrowseBooks role="student" />} />
         <Route path="reservations" element={<StudentReservations />} />

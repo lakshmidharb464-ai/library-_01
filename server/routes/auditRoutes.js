@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { protect, authorize } from '../middleware/auth.js';
 import storage from '../services/storageService.js';
 
@@ -19,13 +20,7 @@ router.get('/', protect, authorize('admin'), async (req, res) => {
 // POST /api/audit-logs/clear (Optional for admin)
 router.post('/clear', protect, authorize('admin'), async (req, res) => {
   try {
-    if (storage.isUsingMongo) {
-      const AuditLog = mongoose.model('AuditLog');
-      await AuditLog.deleteMany({});
-    } else {
-      storage.data.auditlogs = [];
-      storage.saveToFile();
-    }
+    await storage.deleteMany('AuditLog');
     res.json({ success: true, message: 'Logs cleared successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

@@ -1,8 +1,8 @@
 import { useLibrary } from '../../contexts/LibraryContext';
 import TelemetryHUD from '../shared/TelemetryHUD';
-import styles from './LibrarianDashboard.module.css';
+import styles from './CustodianDashboard.module.css';
 
-export default function LibrarianDashboard() {
+export default function CustodianDashboard() {
   const { transactions, books, users, calculateFine, currentUser } = useLibrary();
   const active = transactions.filter(t => t.status !== 'returned');
   const overdue = active.filter(t => new Date(t.dueDate) < new Date());
@@ -12,17 +12,25 @@ export default function LibrarianDashboard() {
   const recent = [...active].sort((a, b) => new Date(b.issueDate) - new Date(a.issueDate)).slice(0, 8);
 
   const metrics = [
-    { label: 'Active Issues', val: active.length, max: 20, color: '#00ffc8', cAlpha: 'rgba(0,255,200,0.25)', icon: '📤' },
-    { label: 'Overdue', val: overdue.length, max: 10, color: '#ff4d6d', cAlpha: 'rgba(255,77,109,0.25)', icon: '⚠️' },
-    { label: 'Returned Today', val: returned.filter(t => new Date(t.returnDate).toDateString() === new Date().toDateString()).length, max: 10, color: '#00b4d8', cAlpha: 'rgba(0,180,216,0.25)', icon: '📥' },
-    { label: 'Fines Collected', val: `₹${totalFines}`, max: 1000, color: '#ffd700', cAlpha: 'rgba(255,215,0,0.25)', icon: '💰' },
+    { label: 'Active Protocols', val: active.length, max: 20, color: '#00ffc8', cAlpha: 'rgba(0,255,200,0.25)', icon: '📤' },
+    { label: 'Breach Protocols', val: overdue.length, max: 10, color: '#ff4d6d', cAlpha: 'rgba(255,77,109,0.25)', icon: '⚠️' },
+    { label: 'Restored Assets', val: returned.filter(t => new Date(t.returnDate).toDateString() === new Date().toDateString()).length, max: 10, color: '#00b4d8', cAlpha: 'rgba(0,180,216,0.25)', icon: '📥' },
+    { label: 'Fiscal Drift', val: `₹${totalFines}`, max: 1000, color: '#ffd700', cAlpha: 'rgba(255,215,0,0.25)', icon: '💰' },
+    { 
+      label: 'System Sync', 
+      val: currentUser?.id ? 'OPTIMAL' : 'OFFLINE', 
+      max: 100, 
+      color: '#00ffc8', 
+      cAlpha: 'rgba(0,255,200,0.2)', 
+      icon: '📡' 
+    },
   ];
 
   return (
     <div className={`${styles.page} animate-fade-in`}>
       <div className={styles.header}>
         <div>
-          <h2 className={styles.title}>Librarian Hub</h2>
+          <h2 className={styles.title}>Nexus Custodian Hub</h2>
           <p className={styles.sub}>
             Welcome back, <strong style={{color: 'white'}}>{currentUser?.name}</strong> &bull; Operational Dashboard Active
           </p>
@@ -37,10 +45,10 @@ export default function LibrarianDashboard() {
           <span>⚠️</span>
           <div>
             <div style={{ color: '#ff4d6d', fontSize: '1.2rem', fontFamily: 'Orbitron', fontWeight: 800, textShadow: '0 0 10px rgba(255,77,109,0.5)' }}>
-              CRITICAL: {overdue.length} OVERDUE ASSET{overdue.length > 1 ? 'S' : ''}!
+              CRITICAL PROTOCOL BREACH: {overdue.length} ASSET{overdue.length > 1 ? 'S' : ''} DETACHED!
             </div>
             <div style={{ color: 'rgba(232,244,255,0.7)', fontSize: '0.9rem', marginTop: 4 }}>
-              Negative compounding active at ₹2/day baseline rate.
+              Negative compounding active. Fiscal drift increasing.
             </div>
           </div>
         </div>
@@ -76,7 +84,11 @@ export default function LibrarianDashboard() {
                     </strong>
                   </td>
                   <td>{user?.name || 'Unknown'}</td>
-                  <td><span className="badge badge-purple" style={{ textTransform: 'capitalize' }}>{user?.role}</span></td>
+                  <td>
+                    <span className="badge badge-purple" style={{ textTransform: 'capitalize' }}>
+                      {user?.role === 'custodian' ? 'Custodian' : user?.role}
+                    </span>
+                  </td>
                   <td style={{fontFamily: 'monospace', opacity: 0.8}}>{new Date(tx.issueDate).toLocaleDateString()}</td>
                   <td style={{ color: isOverdue ? '#ff4d6d' : '#00ffc8', fontFamily: 'monospace' }}>
                     {new Date(tx.dueDate).toLocaleDateString()}

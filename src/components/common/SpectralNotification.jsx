@@ -35,7 +35,7 @@ export default function SpectralNotification({ message, type = 'success', id, on
           <div className={styles.iconPulse} />
         </div>
         <div className={styles.messageRow}>
-          <span className={styles.tag}>[ SYSTEM_ALERT ]</span>
+          <span className={styles.tag}>[ SYSTEM_PROTOCOL ]</span>
           <p className={styles.message}>{message}</p>
         </div>
       </div>

@@ -310,3 +310,81 @@
     border-top: 1px solid rgba(255,77,109,0.2);
     padding-top: 12px;
 }
+
+.logCard {
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.logHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(232,244,255,0.4);
+    margin-bottom: 16px;
+}
+
+.pulseBtn {
+    background: rgba(123,47,255,0.1);
+    border: 1px solid rgba(123,47,255,0.3);
+    color: #7b2fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.pulseBtn:hover {
+    background: rgba(123,47,255,0.2);
+    box-shadow: 0 0 15px rgba(123,47,255,0.3);
+    transform: translateY(-1px);
+}
+
+.logList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.logItem {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    display: flex;
+    gap: 10px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+}
+
+.logItem.info { border-left-color: #00b4d8; color: rgba(0,180,216,0.8); }
+.logItem.success { border-left-color: #00ffc8; color: rgba(0,255,200,0.8); }
+.logItem.warning { border-left-color: #ffbe0b; color: rgba(255,190,11,0.8); }
+.logItem.pulse { 
+    border-left-color: #7b2fff; 
+    color: #fff;
+    background: rgba(123,47,255,0.1);
+    animation: logFlash 0.5s ease-out;
+}
+
+@keyframes logFlash {
+    0% { background: rgba(123,47,255,0.4); }
+    100% { background: rgba(123,47,255,0.1); }
+}
+
+.logTime {
+    opacity: 0.4;
+    white-space: nowrap;
+}
+
+.logMsg {
+    text-transform: uppercase;
+}
+

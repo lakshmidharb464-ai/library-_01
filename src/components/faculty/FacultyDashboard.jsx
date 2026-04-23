@@ -11,6 +11,22 @@ export default function FacultyDashboard() {
   const { transactions, books, currentUser, calculateFine, recommendations, systemStatus, reviews } = useLibrary();
   const navigate = useNavigate();
   const [viewBook, setViewBook] = useState(null);
+  const [telemetryLogs, setTelemetryLogs] = useState([
+    { id: 1, time: '14:20:05', msg: 'NEURAL LINK ESTABLISHED', type: 'info' },
+    { id: 2, time: '14:21:12', msg: 'ASSET MATRIX SYNCHRONIZED', type: 'success' },
+    { id: 3, time: '14:22:30', msg: 'SUB-SECTOR PHASING ACTIVE', type: 'warning' },
+  ]);
+
+  const triggerPulse = () => {
+    const time = new Date().toLocaleTimeString('en-GB');
+    const newLog = { 
+      id: Date.now(), 
+      time, 
+      msg: 'NEURAL PULSE BROADCASTED', 
+      type: 'pulse' 
+    };
+    setTelemetryLogs(prev => [newLog, ...prev.slice(0, 4)]);
+  };
 
   const myTx = transactions.filter(t => t.userId === currentUser?.id);
   const active = myTx.filter(t => t.status !== 'returned');
@@ -20,11 +36,11 @@ export default function FacultyDashboard() {
 
   const metrics = [
     { label: 'Active Protocols', val: active.length, max: 10, color: '#7b2fff', cAlpha: 'rgba(123,47,255,0.2)', icon: '🧠' },
-    { label: 'Breach Alerts', val: overdue.length, max: 5, color: '#ff4d6d', cAlpha: 'rgba(255,77,109,0.2)', icon: '🔥' },
+    { label: 'Breach Protocols', val: overdue.length, max: 5, color: '#ff4d6d', cAlpha: 'rgba(255,77,109,0.2)', icon: '🔥' },
     { label: 'Fiscal Drift', val: `₹${pendingFines}`, max: 1000, color: '#ffbe0b', cAlpha: 'rgba(255,190,11,0.2)', icon: '💰' },
     { 
       label: 'System Sync', 
-      val: systemStatus?.online ? (systemStatus?.dbConnected ? 'ONLINE' : 'DEGRADED') : 'OFFLINE', 
+      val: systemStatus?.online ? (systemStatus?.dbConnected ? 'OPTIMAL' : 'DEGRADED') : 'OFFLINE', 
       max: 100, 
       color: systemStatus?.online ? (systemStatus?.dbConnected ? '#00ffc8' : '#ffbe0b') : '#ff4d6d', 
       cAlpha: systemStatus?.online ? (systemStatus?.dbConnected ? 'rgba(0,255,200,0.2)' : 'rgba(255,190,11,0.2)') : 'rgba(255,77,109,0.2)', 
@@ -146,6 +162,23 @@ export default function FacultyDashboard() {
               <div className={styles.breachFooter}>IMMEDIATE RESTORATION REQUIRED</div>
             </div>
           )}
+
+          <div className={`${styles.logCard} glass-card`}>
+            <div className={styles.logHeader}>
+              <span>TELEMETRY FEED</span>
+              <button className={styles.pulseBtn} onClick={triggerPulse}>
+                TRIGGER PULSE
+              </button>
+            </div>
+            <div className={styles.logList}>
+              {telemetryLogs.map(log => (
+                <div key={log.id} className={`${styles.logItem} ${styles[log.type]}`}>
+                  <span className={styles.logTime}>[{log.time}]</span>
+                  <span className={styles.logMsg}>{log.msg}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
       </main>
 

@@ -71,9 +71,6 @@ const FEAT_SVGS = {
 export default function Landing() {
   const navigate = useNavigate();
   const { books, users, dispatch, addToast } = useLibrary();
-  const [showUserPicker, setShowUserPicker] = useState(null);
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
-  const [adminCreds, setAdminCreds] = useState({ email: '', password: '' });
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -98,20 +95,23 @@ export default function Landing() {
       id: 'admin', icon: 'shield', label: 'Admin Nexus',
       desc: 'Full system telemetry, user management, and global configuration.',
       color: '#ff4d6d',
+      path: 'admin',
       users: users.filter(u => u.role === 'admin'),
       features: ['User Management', 'Audit Logs', 'System Config', 'Analytics'],
     },
     {
-      id: 'librarian', icon: 'book', label: 'Librarian Hub',
+      id: 'custodian', icon: 'book', label: 'Custodian Hub',
       desc: 'Manage reservations, book conditions, fines, and library events.',
       color: '#00ffc8',
-      users: users.filter(u => u.role === 'librarian'),
+      path: 'custodian',
+      users: users.filter(u => u.role === 'custodian'),
       features: ['Issue & Return', 'Reservations', 'Fine Management', 'Events'],
     },
     {
       id: 'faculty', icon: 'brain', label: 'Faculty Overmind',
       desc: 'Extended borrowing limits, bibliography tools, and reading analytics.',
       color: '#7b2fff',
+      path: 'faculty',
       users: users.filter(u => u.role === 'faculty'),
       features: ['Bibliography', 'Syllabus Builder', 'Reading Progress', 'Acquisitions'],
     },
@@ -119,6 +119,7 @@ export default function Landing() {
       id: 'student', icon: 'grad', label: 'Student Portal',
       desc: 'Set reading goals, track progress, and manage book reservations.',
       color: '#00b4d8',
+      path: 'student',
       users: users.filter(u => u.role === 'student'),
       features: ['My Books', 'Study Timer', 'Reading Goals', 'Peer Groups'],
     },
@@ -133,7 +134,7 @@ export default function Landing() {
 
   useEffect(() => {
     // Simulate cinematic boot sequence
-    const timer = setTimeout(() => setLoading(false), 1800);
+    const timer = setTimeout(() => setLoading(false), 3200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -144,24 +145,13 @@ export default function Landing() {
   }, []);
 
   const loginAs = (role, user) => {
-    dispatch({ type: 'SET_ROLE', role: role.id, user });
+    dispatch({ type: 'SET_AUTH', role: role.id, user });
     addToast(`Welcome, ${user.name}! Entering ${role.label}…`, 'success');
-    navigate(`/${role.id}`);
+    navigate(`/${role.path}`);
   };
 
   const handleRoleSelect = (role) => {
     navigate(`/auth?role=${role.id}`);
-  };
-
-  const handleAdminAuth = (e) => {
-    e.preventDefault();
-    if (adminCreds.email === 'admin@gmail.com' && adminCreds.password === 'admin') {
-      setShowAdminLogin(false);
-      const adminUser = users.find(u => u.role === 'admin') || { name: 'System Admin', role: 'admin' };
-      loginAs(dynamicRoles.find(r => r.id === 'admin'), adminUser);
-    } else {
-      addToast('Invalid Admin credentials.', 'danger');
-    }
   };
 
   const handleNewsletterSubmit = (e) => {
@@ -186,20 +176,17 @@ export default function Landing() {
         <button className={styles.skipBtn} onClick={() => setLoading(false)}>
           SKIP INTRO
         </button>
-        <div className={styles.loaderLogo}>
-          <svg viewBox="0 0 100 100" className={styles.logoSvg}>
-            <polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="none" stroke="url(#loaderGlow)" strokeWidth="2"/>
-            <text x="50" y="55" textAnchor="middle" fill="#00ffc8" fontFamily="Orbitron" fontSize="24" fontWeight="800">LN</text>
-            <defs>
-              <linearGradient id="loaderGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00ffc8" />
-                <stop offset="100%" stopColor="#7b2fff" />
-              </linearGradient>
-            </defs>
-          </svg>
+        <div className={styles.cyberLoader}>
+          <div className={styles.glitchText} data-text="ACCESSING NEXUS">ACCESSING NEXUS</div>
+          <div className={styles.cyberBar}>
+            <div className={styles.cyberFill}></div>
+          </div>
+          <div className={styles.cyberDetails}>
+            <span>SYS.VER: 4.9.2</span>
+            <span>AUTH: GRANTED</span>
+            <span>NODE: SECURE</span>
+          </div>
         </div>
-        <div className={styles.loaderText}>INITIALIZING NEXUS CORE...</div>
-        <div className={styles.loaderBar}><div className={styles.loaderFill} /></div>
       </div>
     );
   }
@@ -222,7 +209,7 @@ export default function Landing() {
           <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
           <a href="#stats" onClick={() => setMenuOpen(false)}>Impact</a>
           <a href="#roles" onClick={() => setMenuOpen(false)}>Portals</a>
-          <a href="#roles" className="btn btn-primary btn-sm" onClick={() => setMenuOpen(false)}>Sign In</a>
+          <a href="#roles" className="btn btn-primary btn-sm" onClick={(e) => { e.preventDefault(); setMenuOpen(false); navigate('/auth'); }}>Sign In</a>
         </div>
         <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           <span className={`${styles.hamburgerLine} ${menuOpen ? styles.open : ''}`} />
@@ -452,7 +439,7 @@ export default function Landing() {
 
             <div className={styles.footerColNewsletter}>
               <h4>Stay Updated</h4>
-              <p>Receive system status alerts and new acquisition notifications.</p>
+              <p>Receive system status notifications and new acquisition notifications.</p>
               <form className={styles.newsletterInput} onSubmit={handleNewsletterSubmit}>
                 <input
                   type="email"
@@ -476,77 +463,6 @@ export default function Landing() {
         </div>
       </footer>
 
-      {/* User Picker Modal */}
-      {showUserPicker && (
-        <div className={styles.pickerOverlay} onClick={() => setShowUserPicker(null)}>
-          <div className={styles.picker} onClick={e => e.stopPropagation()}>
-            <h3 className={styles.pickerTitle} style={{ color: showUserPicker.color }}>
-              {showUserPicker.icon} Select {showUserPicker.label} Account
-            </h3>
-            <div className={styles.pickerList}>
-              {showUserPicker.users.map(user => (
-                <button
-                  key={user.id}
-                  className={styles.pickerItem}
-                  style={{ '--role-color': showUserPicker.color }}
-                  onClick={() => { setShowUserPicker(null); loginAs(showUserPicker, user); }}
-                >
-                  <div className={styles.pickerAvatar} style={{ background: showUserPicker.color }}>
-                    {user.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className={styles.pickerName}>{user.name}</div>
-                    <div className={styles.pickerDept}>{user.department}</div>
-                  </div>
-                  <span className={styles.pickerArrow}>→</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Secure Admin Auth Modal */}
-      {showAdminLogin && (
-        <div className={styles.pickerOverlay} onClick={() => setShowAdminLogin(false)}>
-          <div className={styles.picker} onClick={e => e.stopPropagation()} style={{ background: 'rgba(255, 77, 109, 0.05)', border: '1px solid rgba(255, 77, 109, 0.2)' }}>
-            <h3 className={styles.pickerTitle} style={{ color: '#ff4d6d' }}>
-              🛡️ Admin Authorization Required
-            </h3>
-            <form onSubmit={handleAdminAuth} style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 20 }}>
-              <div className="form-group">
-                <label className="form-label" style={{ color: '#ff4d6d' }}>Secure Email</label>
-                <input 
-                  type="email" 
-                  className="form-input" 
-                  autoFocus
-                  style={{ borderColor: 'rgba(255,77,109,0.3)', background: 'rgba(0,0,0,0.5)' }}
-                  required 
-                  placeholder="admin@gmail.com"
-                  value={adminCreds.email}
-                  onChange={e => setAdminCreds(c => ({...c, email: e.target.value}))} 
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label" style={{ color: '#ff4d6d' }}>Encrypted Password</label>
-                <input 
-                  type="password" 
-                  className="form-input" 
-                  style={{ borderColor: 'rgba(255,77,109,0.3)', background: 'rgba(0,0,0,0.5)' }}
-                  required 
-                  placeholder="••••••••"
-                  value={adminCreds.password} 
-                  onChange={e => setAdminCreds(c => ({...c, password: e.target.value}))} 
-                />
-              </div>
-              <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 10 }}>
-                <button type="button" className="btn btn-secondary" onClick={() => setShowAdminLogin(false)}>Abort</button>
-                <button type="submit" className="btn btn-primary" style={{ background: '#ff4d6d', borderColor: '#ff4d6d', color: '#fff' }}>Authenticate</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
       {/* Holographic Scan Overlay */}
       {selectedAsset && (
         <div className={`${styles.scanOverlay} ${isScanning ? styles.scanning : ''}`}>

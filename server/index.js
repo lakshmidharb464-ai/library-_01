@@ -13,6 +13,17 @@ import aiRoutes from './routes/aiRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import facultyRoutes from './routes/facultyRoutes.js';
 
+// Model imports to register schemas
+import './models/User.js';
+import './models/Book.js';
+import './models/Transaction.js';
+import './models/AuditLog.js';
+import './models/Setting.js';
+import './models/Syllabus.js';
+import './models/Bibliography.js';
+import './models/ReadingProgress.js';
+import './models/Recommendation.js';
+
 // Load environment variables
 dotenv.config();
 

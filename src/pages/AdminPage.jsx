@@ -10,6 +10,7 @@ import BookReviews from '../components/admin/BookReviews';
 import Announcements from '../components/admin/Announcements';
 import LibrarySettings from '../components/admin/LibrarySettings';
 import AuditLogs from '../components/admin/AuditLogs';
+import UserApprovals from '../components/admin/UserApprovals';
 import NexusCommLink from '../components/shared/NexusCommLink';
 
 export default function AdminPage() {
@@ -18,7 +19,8 @@ export default function AdminPage() {
       <Routes>
         <Route index element={<AdminDashboard />} />
         <Route path="books" element={<BookCatalog />} />
-        <Route path="users" element={<PersonnelManager manageableRoles={['student', 'faculty', 'librarian', 'admin']} />} />
+        <Route path="users" element={<PersonnelManager manageableRoles={['student', 'faculty', 'custodian', 'admin']} />} />
+        <Route path="approvals" element={<UserApprovals />} />
         <Route path="comms" element={<NexusCommLink />} />
         <Route path="reviews" element={<BookReviews />} />
         <Route path="requests" element={<ReviewRequests />} />

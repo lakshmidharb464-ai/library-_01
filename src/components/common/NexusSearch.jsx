@@ -17,22 +17,22 @@ const ROUTE_INDEX = {
     { label: 'Reviews', path: '/admin/reviews', icon: '⭐', keywords: 'book reviews ratings' },
     { label: 'Requests', path: '/admin/requests', icon: '💡', keywords: 'recommendations requests' },
     { label: 'Analytics', path: '/admin/analytics', icon: '📊', keywords: 'stats charts data' },
-    { label: 'Announcements', path: '/admin/announcements', icon: '📢', keywords: 'news alerts' },
+    { label: 'Announcements', path: '/admin/announcements', icon: '📢', keywords: 'news notifications' },
     { label: 'Audit Logs', path: '/admin/logs', icon: '🛡️', keywords: 'logs history' },
     { label: 'Settings', path: '/admin/settings', icon: '⚙️', keywords: 'config preferences' },
     { label: 'Import/Export', path: '/admin/io', icon: '🔄', keywords: 'import export backup' },
   ],
-  librarian: [
-    { label: 'Librarian Dashboard', path: '/librarian', icon: '◈', keywords: 'home overview' },
-    { label: 'Issue/Return', path: '/librarian/issue', icon: '📤', keywords: 'checkout return loan' },
-    { label: 'Reservations', path: '/librarian/reservations', icon: '📌', keywords: 'reserve hold' },
-    { label: 'Comm-Link', path: '/librarian/comms', icon: '💬', keywords: 'messages chat' },
-    { label: 'Fines Engine', path: '/librarian/fines', icon: '💰', keywords: 'fines penalties' },
-    { label: 'Reports Hub', path: '/librarian/reports', icon: '📋', keywords: 'reports analytics' },
-    { label: 'Book Condition', path: '/librarian/condition', icon: '🔖', keywords: 'condition damage' },
-    { label: 'Events', path: '/librarian/events', icon: '📅', keywords: 'events calendar' },
-    { label: 'Recommendations', path: '/librarian/recommendations', icon: '💡', keywords: 'recommend suggest' },
-    { label: 'Settings', path: '/librarian/settings', icon: '⚙️', keywords: 'config preferences' },
+  custodian: [
+    { label: 'Nexus Custodian', path: '/custodian', icon: '◈', keywords: 'home overview' },
+    { label: 'Issue/Return', path: '/custodian/issue', icon: '📤', keywords: 'checkout return loan' },
+    { label: 'Reservations', path: '/custodian/reservations', icon: '📌', keywords: 'reserve hold' },
+    { label: 'Comm-Link', path: '/custodian/comms', icon: '💬', keywords: 'messages chat' },
+    { label: 'Fines Engine', path: '/custodian/fines', icon: '💰', keywords: 'fines penalties' },
+    { label: 'Reports Hub', path: '/custodian/reports', icon: '📋', keywords: 'reports analytics' },
+    { label: 'Book Condition', path: '/custodian/condition', icon: '🔖', keywords: 'condition damage' },
+    { label: 'Events', path: '/custodian/events', icon: '📅', keywords: 'events calendar' },
+    { label: 'Recommendations', path: '/custodian/recommendations', icon: '💡', keywords: 'recommend suggest' },
+    { label: 'Settings', path: '/custodian/settings', icon: '⚙️', keywords: 'config preferences' },
   ],
   faculty: [
     { label: 'Faculty Dashboard', path: '/faculty', icon: '◈', keywords: 'home overview' },
@@ -110,11 +110,11 @@ export default function NexusSearch({ isOpen, onClose }) {
       }
     });
 
-    // 3. Users (admin/librarian only)
-    if (currentRole === 'admin' || currentRole === 'librarian') {
+    // 3. Users (admin/custodian only)
+    if (currentRole === 'admin' || currentRole === 'custodian') {
       users.forEach(u => {
         if (u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)) {
-          const usersPath = currentRole === 'admin' ? '/admin/users' : '/librarian/users';
+          const usersPath = currentRole === 'admin' ? '/admin/users' : '/custodian/users';
           items.push({ type: 'user', label: u.name, sub: `${u.role} · ${u.department}`, icon: '👤', path: usersPath });
         }
       });
