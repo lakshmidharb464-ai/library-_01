@@ -79,6 +79,7 @@ export default function Landing() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterError, setNewsletterError] = useState('');
   const [newsletterSuccess, setNewsletterSuccess] = useState('');
+  const [logLines, setLogLines] = useState([]);
 
   const marqueeBooks = [...books, ...books, ...books];
 
@@ -134,9 +135,33 @@ export default function Landing() {
 
   useEffect(() => {
     // Simulate cinematic boot sequence
-    const timer = setTimeout(() => setLoading(false), 3200);
+    const timer = setTimeout(() => setLoading(false), 4500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!loading) return;
+    const lines = [
+      '> SYS.INIT: BOOT_SEQUENCE_ENGAGED',
+      '> MEM_CHECK: OK [128.4 TB SECURE RAM]',
+      '> QUANTUM_CORE: SPUN UP',
+      '> NEURAL_LINK: ESTABLISHING...',
+      '> ENCRYPTION: AES-2048 HANDSHAKE COMPLETED',
+      '> DATABASE_SYNC: DELTA_FETCH_OK',
+      '> UPLINK: STABLE 10.4 Pbps',
+      '> OVERRIDE_AUTH: BYPASS_SUCCESS',
+      '> AUTHENTICATING_GUEST_PROTOCOL...',
+      '> NEXUS_READY.'
+    ];
+    let idx = 0;
+    const interval = setInterval(() => {
+      if (idx < lines.length) {
+        setLogLines(prev => [...prev.slice(-4), lines[idx]]);
+        idx++;
+      }
+    }, 400);
+    return () => clearInterval(interval);
+  }, [loading]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -173,17 +198,34 @@ export default function Landing() {
   if (loading) {
     return (
       <div className={styles.preloader}>
+        <div className={styles.preloaderBg}></div>
+        <div className={styles.dataCascade}></div>
+        <div className={styles.scanlinesOverlay}></div>
+        <div className={styles.hexGrid}></div>
         <button className={styles.skipBtn} onClick={() => setLoading(false)}>
-          SKIP INTRO
+          SKIP BOOT SEQUENCE
         </button>
+        <div className={styles.cyberRingContainer}>
+          <div className={styles.cyberRing1}></div>
+          <div className={styles.cyberRing2}></div>
+          <div className={styles.cyberRing3}></div>
+          <div className={styles.cyberRing4}></div>
+          <div className={styles.cyberRing5}></div>
+          <div className={styles.cyberCore}></div>
+        </div>
         <div className={styles.cyberLoader}>
-          <div className={styles.glitchText} data-text="ACCESSING NEXUS">ACCESSING NEXUS</div>
+          <div className={styles.glitchText} data-text="INITIALIZING NEXUS">INITIALIZING NEXUS</div>
+          <div className={styles.terminalOutput}>
+            {logLines.map((line, i) => (
+              <div key={i} className={styles.terminalLine}>{line}</div>
+            ))}
+          </div>
           <div className={styles.cyberBar}>
             <div className={styles.cyberFill}></div>
           </div>
           <div className={styles.cyberDetails}>
             <span>SYS.VER: 4.9.2</span>
-            <span>AUTH: GRANTED</span>
+            <span>UPLINK: STABLE</span>
             <span>NODE: SECURE</span>
           </div>
         </div>

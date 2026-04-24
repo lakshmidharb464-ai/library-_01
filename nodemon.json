@@ -1,0 +1,4 @@
+{
+  "ignore": ["server/data/*.json", "scratch/*", "dist/*"],
+  "ext": "js,mjs,cjs,json"
+}

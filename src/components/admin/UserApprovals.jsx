@@ -1,15 +1,17 @@
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useLibrary } from '../../contexts/LibraryContext';
 import styles from './UserApprovals.module.css';
 
 export default function UserApprovals() {
   const { users, apiFetch, dispatch, addToast } = useLibrary();
+  const [processingId, setProcessingId] = useState(null);
 
   const pendingUsers = useMemo(() => {
     return users.filter(u => u.status === 'pending');
   }, [users]);
 
   const handleApprove = async (user) => {
+    setProcessingId(user.id);
     try {
       const data = await apiFetch(`/admin/approve/${user.id}`, {
         method: 'PATCH'
@@ -21,11 +23,14 @@ export default function UserApprovals() {
       addToast(`${user.name} approved successfully`, 'success');
     } catch (err) {
       addToast(err.message, 'error');
+    } finally {
+      setProcessingId(null);
     }
   };
 
   const handleReject = async (user) => {
     if (!window.confirm(`Are you sure you want to reject ${user.name}?`)) return;
+    setProcessingId(user.id);
     try {
       const data = await apiFetch(`/admin/reject/${user.id}`, {
         method: 'PATCH'
@@ -37,6 +42,8 @@ export default function UserApprovals() {
       addToast(`${user.name} rejected`, 'warning');
     } catch (err) {
       addToast(err.message, 'error');
+    } finally {
+      setProcessingId(null);
     }
   };
 
@@ -108,14 +115,20 @@ export default function UserApprovals() {
                 <button 
                   className={styles.btnApprove}
                   onClick={() => handleApprove(user)}
+                  disabled={processingId === user.id}
                 >
-                  ✓ AUTHORIZE
+                  {processingId === user.id ? (
+                    <div className={styles.cyberLoader}><span /><span /><span /></div>
+                  ) : '✓ AUTHORIZE'}
                 </button>
                 <button 
                   className={styles.btnReject}
                   onClick={() => handleReject(user)}
+                  disabled={processingId === user.id}
                 >
-                  ✕ DENY ACCESS
+                  {processingId === user.id ? (
+                    <div className={styles.cyberLoader}><span /><span /><span /></div>
+                  ) : '✕ DENY ACCESS'}
                 </button>
               </div>
             </div>

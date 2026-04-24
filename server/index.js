@@ -3,17 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
 
-// Route imports
-import authRoutes from './routes/authRoutes.js';
-import bookRoutes from './routes/bookRoutes.js';
-import userRoutes from './routes/userRoutes.js';
-import transactionRoutes from './routes/transactionRoutes.js';
-import auditRoutes from './routes/auditRoutes.js';
-import aiRoutes from './routes/aiRoutes.js';
-import settingsRoutes from './routes/settingsRoutes.js';
-import facultyRoutes from './routes/facultyRoutes.js';
-
-// Model imports to register schemas
+// Model imports to register schemas - MUST BE FIRST
 import './models/User.js';
 import './models/Book.js';
 import './models/Transaction.js';
@@ -24,11 +14,22 @@ import './models/Bibliography.js';
 import './models/ReadingProgress.js';
 import './models/Recommendation.js';
 
+// Route imports
+import authRoutes from './routes/authRoutes.js';
+import bookRoutes from './routes/bookRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import transactionRoutes from './routes/transactionRoutes.js';
+import auditRoutes from './routes/auditRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
+import facultyRoutes from './routes/facultyRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+
 // Load environment variables
 dotenv.config();
 
 // Connect to MongoDB
-connectDB();
+await connectDB();
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use('/api/audit', auditRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/faculty', facultyRoutes);
+app.use('/api/admin', adminRoutes);
 
 // GET /api/status - simple health check
 app.get('/api/status', (req, res) => {

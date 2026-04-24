@@ -12,6 +12,8 @@ export const protect = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'nebula-secret-key-2026');
+    // Normalize legacy 'librarian' role to 'custodian' after rebranding
+    if (decoded.role === 'librarian') decoded.role = 'custodian';
     req.user = decoded;
     next();
   } catch (error) {

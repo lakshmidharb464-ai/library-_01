@@ -38,7 +38,7 @@ const getInitialAuth = () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const { role, user } = JSON.parse(saved);
-      return { role, user };
+      return { role: role?.toLowerCase(), user };
     }
   } catch (e) {
     console.error('Auth Init Error:', e);
@@ -82,7 +82,7 @@ const INITIAL_STATE = {
 function libraryReducer(state, action) {
   switch (action.type) {
     case 'SET_AUTH': 
-      return { ...state, currentRole: action.role, currentUser: action.user };
+      return { ...state, currentRole: action.role?.toLowerCase(), currentUser: action.user };
     case 'LOGOUT': 
       return { ...state, currentRole: null, currentUser: null };
     case 'SET_DATA': 
@@ -336,16 +336,12 @@ export function LibraryProvider({ children }) {
         body: JSON.stringify(credentials),
       });
       
-      if (response.twoFactorRequired) {
-        return response; // Return the full response so AuthPage can handle 2FA
-      }
-
-      const { token, data: user } = response;
-      const role = user?.role;
+      const { accessToken, data: user } = response;
+      const role = user?.role?.toLowerCase();
       
       if (!user || !role) throw new Error('Invalid server response: user data missing');
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token, role }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token: accessToken, role }));
       dispatch({ type: 'SET_AUTH', user, role });
       addToast(`Welcome back, ${user.name}!`, 'success');
       fetchData();
@@ -355,6 +351,48 @@ export function LibraryProvider({ children }) {
     }
   }, [addToast, fetchData, apiFetch]);
 
+  // Send OTP (New for Nexus)
+  const sendOTP = useCallback(async (email, name, role) => {
+    try {
+      await apiFetch('/auth/send-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email, name, role }),
+      });
+      addToast('Verification code sent to your email', 'info');
+    } catch (err) {
+      addToast(err.message, 'error');
+      throw err;
+    }
+  }, [addToast, apiFetch]);
+
+  // Forgot Password
+  const forgotPassword = useCallback(async (email) => {
+    try {
+      await apiFetch('/auth/forgot-password', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+      });
+      addToast('Reset link sent to your email', 'success');
+    } catch (err) {
+      addToast(err.message, 'error');
+      throw err;
+    }
+  }, [addToast, apiFetch]);
+
+  // Reset Password
+  const resetPassword = useCallback(async (token, password) => {
+    try {
+      await apiFetch('/auth/reset-password', {
+        method: 'POST',
+        body: JSON.stringify({ token, password }),
+      });
+      addToast('Password reset successful', 'success');
+    } catch (err) {
+      addToast(err.message, 'error');
+      throw err;
+    }
+  }, [addToast, apiFetch]);
+
   // Register
   const register = useCallback(async (userData) => {
     try {
@@ -363,10 +401,22 @@ export function LibraryProvider({ children }) {
         body: JSON.stringify(userData),
       });
 
-      addToast('Account created successfully. Pending admin approval.', 'success');
       return data.success;
     } catch (err) {
       addToast(err.message, 'error');
+      throw err;
+    }
+  }, [addToast, apiFetch]);
+
+  const resendOTP = useCallback(async (email) => {
+    try {
+      await apiFetch('/auth/resend-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+      });
+      addToast('New verification code sent', 'info');
+    } catch (err) {
+      addToast(err.message || 'Failed to resend code', 'error');
       throw err;
     }
   }, [addToast, apiFetch]);
@@ -403,20 +453,22 @@ export function LibraryProvider({ children }) {
     }
   }, [apiFetch]);
 
-  // Verify 2FA
-  const verify2fa = useCallback(async (userId, code) => {
+  // Verify OTP (for 2FA and registration)
+  const verifyOTP = useCallback(async (email, otp) => {
     try {
-      const response = await apiFetch('/auth/verify-2fa', {
+      const response = await apiFetch('/auth/verify-otp', {
         method: 'POST',
-        body: JSON.stringify({ userId, code }),
+        body: JSON.stringify({ email, otp }),
       });
       
-      const { token, data: user } = response;
-      const role = user?.role;
+      const { accessToken, data: user } = response;
+      const role = user?.role?.toLowerCase();
       
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token, role }));
+      if (!user || !role) throw new Error('Invalid server response: user data missing');
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token: accessToken, role }));
       dispatch({ type: 'SET_AUTH', user, role });
-      addToast(`Nexus Pulse Verified. Welcome, ${user.name}.`, 'success');
+      addToast(`Nexus Identity Verified. Welcome, ${user.name}.`, 'success');
       fetchData();
       return user;
     } catch (err) {
@@ -494,7 +546,11 @@ export function LibraryProvider({ children }) {
     fetchData,
     updateSettings,
     changePassword,
-    verify2fa,
+    sendOTP,
+    resendOTP,
+    forgotPassword,
+    resetPassword,
+    verifyOTP,
     searchBooks,
     getStats,
     calculateFine,

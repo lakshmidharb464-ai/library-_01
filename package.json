@@ -17,6 +17,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^6.0.1",
     "concurrently": "^9.2.1",
     "jsdom": "^29.0.2",
@@ -26,14 +27,19 @@
     "vitest": "^4.1.4"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.13.5",
     "axios": "^1.15.0",
     "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "framer-motion": "^12.38.0",
     "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^1.9.0",
     "mongodb": "^7.1.1",
     "mongoose": "^9.4.1",
+    "nodemailer": "^8.0.5",
     "react-router-dom": "^7.14.0"
   }
 }

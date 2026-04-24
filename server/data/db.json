@@ -1,59 +1,58 @@
 {
   "users": [
     {
-      "id": "admin-1",
       "name": "System Admin",
       "email": "admin@lib.edu",
-      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
+      "password": "$2b$10$ItiEIStiomRpLCXuvhBuNOiKVfqwA2J5XK1djYqNcne91CUy5qT2u",
       "role": "admin",
       "department": "Administration",
       "isActive": true,
-      "status": "active"
+      "status": "active",
+      "id": "ey2fxhzq5"
     },
     {
-      "id": "lib-1",
       "name": "Rohan Das",
       "email": "rohan@lib.edu",
-      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
+      "password": "$2b$10$ItiEIStiomRpLCXuvhBuNOiKVfqwA2J5XK1djYqNcne91CUy5qT2u",
       "role": "custodian",
       "department": "Library",
       "isActive": true,
-      "status": "active"
+      "status": "active",
+      "id": "bsnevvjq2"
     },
     {
-      "id": "stu-1",
       "name": "Aarav Sharma",
       "email": "aarav@lib.edu",
-      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
+      "password": "$2b$10$ItiEIStiomRpLCXuvhBuNOiKVfqwA2J5XK1djYqNcne91CUy5qT2u",
       "role": "student",
       "department": "Computer Science",
       "isActive": true,
-      "status": "active"
+      "status": "active",
+      "id": "nw8m5d0zc"
     },
     {
-      "id": "fac-1",
       "name": "Dr. Sarah",
       "email": "teacher@lib.edu",
-      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
+      "password": "$2b$10$ItiEIStiomRpLCXuvhBuNOiKVfqwA2J5XK1djYqNcne91CUy5qT2u",
       "role": "faculty",
       "department": "Mathematics",
       "isActive": true,
-      "status": "active"
+      "status": "active",
+      "id": "xql7m76aa"
     },
     {
-      "id": "stu-pending",
       "name": "John Doe",
       "email": "john@lib.edu",
-      "password": "$2b$10$y0Pi5e2pg0r0sX8Q7ett/OtVL9wbl72eMnbJoUO/HF0icRiyH8uz.",
+      "password": "$2b$10$ItiEIStiomRpLCXuvhBuNOiKVfqwA2J5XK1djYqNcne91CUy5qT2u",
       "role": "student",
       "department": "Biology",
       "isActive": false,
-      "status": "pending"
+      "status": "pending",
+      "id": "e73bwluvp"
     }
   ],
   "books": [
     {
-      "id": "book-1",
       "title": "Clean Code",
       "author": "Robert C. Martin",
       "category": "Technology",
@@ -61,10 +60,10 @@
       "totalCopies": 5,
       "publishedYear": 2008,
       "coverColor": "#7b2fff",
-      "rating": 4.8
+      "rating": 4.8,
+      "id": "k8vbm3mmr"
     },
     {
-      "id": "book-2",
       "title": "The Alchemist",
       "author": "Paulo Coelho",
       "category": "Fiction",
@@ -72,133 +71,12 @@
       "totalCopies": 10,
       "publishedYear": 1988,
       "coverColor": "#00b4d8",
-      "rating": 4.5
-    },
-    {
-      "title": "JAVA",
-      "author": "Nanda",
-      "isbn": "000-2",
-      "category": "Technology",
-      "copies": "7",
-      "available": 1,
-      "rating": 4,
-      "coverColor": "#90e0ef",
-      "year": 2026,
-      "totalCopies": 7,
-      "availableCopies": 7,
-      "publishedYear": 2026,
-      "_id": "bz7nzzwql",
-      "id": "a9mp5u98a",
-      "createdAt": "2026-04-23T13:15:52.574Z"
+      "rating": 4.5,
+      "id": "3mr2pp2j6"
     }
   ],
   "transactions": [],
-  "auditlogs": [
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "qg97yeqdr",
-      "id": "t0opqyn18",
-      "createdAt": "2026-04-23T06:48:47.849Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "94yg06yd0",
-      "id": "7q1msvurf",
-      "createdAt": "2026-04-23T06:56:19.540Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "SECURITY",
-      "details": "Two-Factor Authentication ENABLED for Nexus account",
-      "_id": "a00w294x4",
-      "id": "5wqva4r17",
-      "createdAt": "2026-04-23T06:59:49.998Z"
-    },
-    {
-      "user": "System Admin",
-      "action": "LOGIN",
-      "details": "Successful login from admin@lib.edu",
-      "_id": "lin7aoo3a",
-      "id": "lxpbekyjs",
-      "createdAt": "2026-04-23T07:00:49.057Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "pb2tpyw1u",
-      "id": "1c7x5ie0q",
-      "createdAt": "2026-04-23T07:32:34.166Z"
-    },
-    {
-      "user": "Rohan Das",
-      "action": "LOGIN",
-      "details": "Successful login from rohan@lib.edu",
-      "_id": "kha6618v4",
-      "id": "ac93yc7im",
-      "createdAt": "2026-04-23T07:39:02.473Z"
-    },
-    {
-      "user": "System Admin",
-      "action": "LOGIN",
-      "details": "Successful login from admin@lib.edu",
-      "_id": "pjwdela1s",
-      "id": "srljjj8ih",
-      "createdAt": "2026-04-23T13:13:15.199Z"
-    },
-    {
-      "user": "Rohan Das",
-      "action": "LOGIN",
-      "details": "Successful login from rohan@lib.edu",
-      "_id": "hzgg0392a",
-      "id": "o7qny3bti",
-      "createdAt": "2026-04-23T13:18:02.330Z"
-    },
-    {
-      "user": "Rohan Das",
-      "action": "LOGIN",
-      "details": "Successful login from rohan@lib.edu",
-      "_id": "0rjqx9x6m",
-      "id": "7ca8scpl0",
-      "createdAt": "2026-04-23T13:37:44.423Z"
-    },
-    {
-      "user": "System Admin",
-      "action": "LOGIN",
-      "details": "Successful login from admin@lib.edu",
-      "_id": "w89rs81ep",
-      "id": "ticcy7bcb",
-      "createdAt": "2026-04-23T13:41:51.795Z"
-    },
-    {
-      "user": "Aarav Sharma",
-      "action": "LOGIN",
-      "details": "Successful login from aarav@lib.edu",
-      "_id": "e1unadrxs",
-      "id": "obt7p4nai",
-      "createdAt": "2026-04-23T13:56:09.683Z"
-    },
-    {
-      "user": "Dr. Sarah",
-      "action": "LOGIN",
-      "details": "Successful login from teacher@lib.edu",
-      "_id": "8w8fw00yy",
-      "id": "a2dvnl0vr",
-      "createdAt": "2026-04-23T13:58:07.556Z"
-    },
-    {
-      "user": "Rohan Das",
-      "action": "LOGIN",
-      "details": "Successful login from rohan@lib.edu",
-      "_id": "audugn5gg",
-      "id": "zy0j0b3z2",
-      "createdAt": "2026-04-23T14:16:15.089Z"
-    }
-  ],
+  "auditlogs": [],
   "settings": {
     "libraryName": "LibraNova Smart Library",
     "finePerDay": 5,
@@ -249,12 +127,7 @@
     "betaAccess": false,
     "highContrast": false,
     "studentReadingChallenges": true,
-    "studentStudyRoomBooking": true,
-    "twoFactorEnabled": true,
-    "accentTheme": "rose",
-    "animations": true,
-    "emailNotifications": false,
-    "publicProfile": false
+    "studentStudyRoomBooking": true
   },
   "syllabi": [],
   "bibliographies": [],

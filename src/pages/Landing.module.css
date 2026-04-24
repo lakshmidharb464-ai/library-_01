@@ -10,88 +10,201 @@
   position: fixed; inset: 0; background: #030510;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   z-index: 99999;
-  transition: opacity 0.2s ease;
+  overflow: hidden;
 }
+
+.preloaderBg {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at center, rgba(0,255,200,0.05) 0%, transparent 70%);
+  animation: bgPulse 4s infinite ease-in-out;
+}
+
+.dataCascade {
+  position: absolute; inset: 0;
+  pointer-events: none; opacity: 0.05;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #00ffc8 2px, #00ffc8 4px);
+  background-size: 100% 4px;
+  animation: cascade 20s linear infinite;
+}
+
+.cyberRingContainer {
+  position: relative;
+  width: 240px; height: 240px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 50px;
+  z-index: 10;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  transform: rotateX(20deg) rotateY(15deg);
+}
+
+.cyberRing1, .cyberRing2, .cyberRing3, .cyberRing4, .cyberRing5 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  transform-style: preserve-3d;
+}
+
+.cyberRing1 {
+  width: 100%; height: 100%;
+  border-top: 2px solid #00ffc8;
+  border-right: 2px solid rgba(0,255,200,0.2);
+  animation: spinRight3D 3s linear infinite;
+  box-shadow: inset 0 0 15px rgba(0,255,200,0.2), 0 0 15px rgba(0,255,200,0.2);
+}
+
+.cyberRing2 {
+  width: 85%; height: 85%;
+  border-bottom: 2px solid #00b4d8;
+  border-left: 2px solid rgba(0,180,216,0.2);
+  animation: spinLeft3D 2.5s linear infinite;
+}
+
+.cyberRing3 {
+  width: 70%; height: 70%;
+  border-top: 2px solid #7b2fff;
+  border-bottom: 2px solid rgba(123,47,255,0.2);
+  animation: spinRight3D 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+.cyberRing4 {
+  width: 55%; height: 55%;
+  border-left: 2px solid #ff4d6d;
+  border-right: 2px solid rgba(255,77,109,0.2);
+  animation: spinLeft3D 1.8s linear infinite reverse;
+}
+
+.cyberRing5 {
+  width: 40%; height: 40%;
+  border: 1px dashed rgba(255,190,11,0.5);
+  animation: spinRight3D 5s linear infinite;
+}
+
+.cyberCore {
+  width: 15%; height: 15%;
+  background: #00ffc8;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc8, inset 0 0 20px #fff;
+  animation: corePulse3D 1.5s infinite alternate ease-in-out;
+  transform: translateZ(20px);
+}
+
+@keyframes spinRight3D { 100% { transform: rotateZ(360deg) rotateX(10deg); } }
+@keyframes spinLeft3D { 100% { transform: rotateZ(-360deg) rotateY(-10deg); } }
+@keyframes corePulse3D {
+  0% { transform: translateZ(10px) scale(0.8); opacity: 0.6; box-shadow: 0 0 10px #00ffc8; }
+  100% { transform: translateZ(40px) scale(1.4); opacity: 1; box-shadow: 0 0 40px #00ffc8, 0 0 80px #00b4d8; }
+}
+@keyframes bgPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+@keyframes cascade { 100% { background-position: 0 100vh; } }
+
 .skipBtn {
   position: absolute; top: 24px; right: 24px;
-  background: transparent; border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(232,244,255,0.4); padding: 8px 16px;
+  background: rgba(0,255,200,0.05); border: 1px solid rgba(0,255,200,0.2);
+  color: #00ffc8; padding: 10px 20px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem; letter-spacing: 0.1em;
-  cursor: pointer; border-radius: 6px;
-  transition: all 0.2s;
+  font-size: 0.8rem; letter-spacing: 0.15em;
+  cursor: pointer; border-radius: 4px;
+  transition: all 0.3s;
+  z-index: 100;
 }
+.skipBtn:hover { background: #00ffc8; color: #000; box-shadow: 0 0 20px rgba(0,255,200,0.4); }
+
 .cyberLoader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  max-width: 400px;
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  width: 100%; max-width: 500px; z-index: 10;
 }
 
 .glitchText {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
-  font-weight: 900;
-  color: #fff;
-  position: relative;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
+  color: #fff; position: relative; letter-spacing: 0.2em; text-transform: uppercase;
   animation: glitch-skew 1s infinite linear alternate-reverse;
+  text-shadow: 0 0 20px rgba(255,255,255,0.4);
 }
-
-.glitchText::before,
-.glitchText::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.glitchText::before, .glitchText::after {
+  content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
 }
-
 .glitchText::before {
-  left: 2px;
-  text-shadow: -2px 0 #ff00c1;
-  clip: rect(44px, 450px, 56px, 0);
+  left: 3px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
   animation: glitch-anim 5s infinite linear alternate-reverse;
 }
-
 .glitchText::after {
-  left: -2px;
-  text-shadow: -2px 0 #00fff9;
-  clip: rect(44px, 450px, 56px, 0);
+  left: -3px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
   animation: glitch-anim2 5s infinite linear alternate-reverse;
 }
 
-.cyberBar {
+.terminalOutput {
   width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(0, 255, 200, 0.3);
-  position: relative;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: #00ffc8;
+  opacity: 0.8;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 255, 200, 0.2);
+  text-align: left;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  text-shadow: 0 0 5px rgba(0, 255, 200, 0.4);
 }
 
+.terminalLine {
+  animation: typeWriter 0.2s steps(40, end) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@keyframes typeWriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.scanlinesOverlay {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 5;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.25) 51%
+  );
+  background-size: 100% 4px;
+}
+
+.hexGrid {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.282' viewBox='0 0 40 69.282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 17.32l-20 11.547L0 17.32V0h40v17.32zm0 34.64l-20 11.548-20-11.548V34.64h40v17.32z' fill='none' stroke='rgba(0,255,200,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 40px 69.282px;
+  animation: hexPulse 6s infinite alternate ease-in-out;
+}
+
+@keyframes hexPulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.cyberBar {
+  width: 100%; height: 4px; background: rgba(255,255,255,0.05);
+  border-radius: 2px; position: relative; overflow: hidden;
+  box-shadow: 0 0 15px rgba(0,255,200,0.1);
+}
 .cyberFill {
-  height: 100%;
-  background: #00ffc8;
-  width: 0%;
-  box-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc8;
+  height: 100%; background: linear-gradient(90deg, transparent, #00ffc8, #fff);
+  width: 0%; box-shadow: 0 0 20px #00ffc8;
   animation: cyberLoad 3s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
 }
 
 .cyberDetails {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem;
-  color: rgba(0, 255, 200, 0.6);
-  letter-spacing: 0.1em;
-  animation: fadeIn 1s ease-in forwards;
+  display: flex; justify-content: space-between; width: 100%;
+  font-family: 'Share Tech Mono', monospace; font-size: 0.8rem;
+  color: #00ffc8; letter-spacing: 0.1em;
+  animation: fadeIn 1s ease-in forwards; opacity: 0;
+  text-shadow: 0 0 10px rgba(0,255,200,0.3);
 }
 
 @keyframes glitch-anim {
@@ -102,7 +215,6 @@
   80% { clip: rect(12px, 9999px, 53px, 0); }
   100% { clip: rect(42px, 9999px, 63px, 0); }
 }
-
 @keyframes glitch-anim2 {
   0% { clip: rect(12px, 9999px, 83px, 0); }
   20% { clip: rect(92px, 9999px, 43px, 0); }
@@ -111,27 +223,26 @@
   80% { clip: rect(82px, 9999px, 53px, 0); }
   100% { clip: rect(22px, 9999px, 63px, 0); }
 }
-
 @keyframes glitch-skew {
   0% { transform: skew(0deg); }
-  10% { transform: skew(-5deg); }
+  10% { transform: skew(-3deg); }
   20% { transform: skew(0deg); }
-  30% { transform: skew(5deg); }
+  30% { transform: skew(3deg); }
   40% { transform: skew(0deg); }
   100% { transform: skew(0deg); }
 }
-
 @keyframes cyberLoad {
   0% { width: 0%; }
-  40% { width: 60%; }
-  60% { width: 65%; }
-  80% { width: 95%; }
+  10% { width: 5%; }
+  30% { width: 30%; }
+  50% { width: 45%; }
+  70% { width: 80%; }
+  90% { width: 85%; }
   100% { width: 100%; }
 }
-
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Background Video */

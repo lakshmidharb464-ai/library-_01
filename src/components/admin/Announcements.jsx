@@ -12,21 +12,41 @@ export default function Announcements() {
   const { announcements, dispatch, addToast, currentUser } = useLibrary();
   const [form, setForm] = useState(emptyForm);
   const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handlePost = (e) => {
+  const handlePost = async (e) => {
     e.preventDefault();
-    dispatch({
-      type: 'ADD_ANNOUNCEMENT',
-      ann: {
-        id: `a${Date.now()}`,
-        ...form,
+    setIsSubmitting(true);
+    try {
+      const newAnn = {
+        title: form.title,
+        body: form.body,
+        priority: form.priority,
+        pinned: form.pinned,
         author: currentUser?.name || 'Admin',
-        date: new Date().toISOString(),
-      },
-    });
-    addToast('Announcement posted to all portals!', 'success');
-    setForm(emptyForm);
-    setShowForm(false);
+      };
+      // Send to backend
+      await apiFetch('/admin/announcements', {
+        method: 'POST',
+        body: JSON.stringify(newAnn)
+      });
+      // Update local state
+      dispatch({
+        type: 'ADD_ANNOUNCEMENT',
+        ann: {
+          id: `a${Date.now()}`,
+          ...newAnn,
+          date: new Date().toISOString(),
+        },
+      });
+      addToast('Announcement posted to all portals!', 'success');
+      setForm(emptyForm);
+      setShowForm(false);
+    } catch (err) {
+      addToast(err.message, 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const sorted = [...announcements].sort((a, b) => {
@@ -96,7 +116,14 @@ export default function Announcements() {
             </div>
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
               <button type="button" className="btn btn-secondary" onClick={() => setShowForm(false)}>Cancel</button>
-              <button type="submit" className="btn btn-primary">📢 Post Announcement</button>
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className={styles.cyberLoader}><span /><span /><span /></div>
+                    <span>TRANSMITTING...</span>
+                  </div>
+                ) : '📢 Post Announcement'}
+              </button>
             </div>
           </form>
         </div>
@@ -108,7 +135,7 @@ export default function Announcements() {
       ) : (
         <div className={styles.list}>
           {sorted.map(ann => {
-            const c = PRIORITY_COLORS[ann.priority];
+            const c = PRIORITY_COLORS[ann.priority] || PRIORITY_COLORS.info;
             return (
               <div key={ann.id} className={styles.annCard} style={{ background: c.bg, borderColor: c.border }}>
                 {ann.pinned && <span className={styles.pinBadge}>📌 Pinned</span>}

@@ -8,13 +8,19 @@ import CustodianPage from './pages/CustodianPage';
 import FacultyPage from './pages/FacultyPage';
 import StudentPage from './pages/StudentPage';
 import ProfileSettings from './pages/ProfileSettings';
+import OTPPage from './pages/OTPPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 // ✅ Protected Route
 function ProtectedRoute({ role, children }) {
   const { currentRole } = useLibrary();
 
-  if (!currentRole) return <Navigate to="/" replace />;
-  if (role && currentRole !== role) return <Navigate to="/" replace />;
+  const normalizedCurrentRole = currentRole?.toLowerCase();
+  const normalizedTargetRole = role?.toLowerCase();
+
+  if (!normalizedCurrentRole) return <Navigate to="/" replace />;
+  if (normalizedTargetRole && normalizedCurrentRole !== normalizedTargetRole) return <Navigate to="/" replace />;
 
   return children;
 }
@@ -26,6 +32,9 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/verify-otp" element={<OTPPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         
         <Route
           path="/admin/*"

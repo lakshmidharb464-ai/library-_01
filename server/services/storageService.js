@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 
+import { dbPromise } from '../config/db.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_FILE = path.join(__dirname, '../data/db.json');
 
@@ -21,20 +23,40 @@ class StorageService {
   }
 
   async init() {
-    // Wait for a delay to allow mongoose to attempt connection
-    // Atlas handshakes can take 1-2 seconds
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Wait for the database connection promise to resolve
+    const connected = await dbPromise;
     
-    if (mongoose.connection.readyState === 1) {
+    if (connected && mongoose.connection.readyState === 1) {
       this.isUsingMongo = true;
       console.log('📦 Storage Service: Using MongoDB Engine');
+      
+      // Check if MongoDB needs seeding
+      try {
+        const User = mongoose.model('User');
+        const userCount = await User.countDocuments();
+        if (userCount === 0) {
+          console.log('🌱 MongoDB is empty. Seeding initial data...');
+          await this.seed();
+        }
+
+        // Migrate legacy 'librarian' role to 'custodian'
+        const migrated = await User.updateMany(
+          { role: 'librarian' },
+          { $set: { role: 'custodian' } }
+        );
+        if (migrated.modifiedCount > 0) {
+          console.log(`🔄 Migrated ${migrated.modifiedCount} user(s) from 'librarian' → 'custodian'`);
+        }
+      } catch (err) {
+        console.error('⚠️ Seeding check failed (Models might not be registered yet):', err.message);
+      }
     } else {
       this.isUsingMongo = false;
       this.loadFromFile();
       if (this.data.users.length === 0) {
         await this.seed();
       }
-      console.log('📁 Storage Service: Using JSON File Engine (Fallback)');
+      console.log(`📁 Storage Service: Using JSON File Engine (Fallback) - Mongoose state: ${mongoose.connection.readyState}`);
     }
   }
 
@@ -46,17 +68,16 @@ class StorageService {
     console.log('🌱 Storage Service: Seeding initial data...');
     const hash = await bcrypt.hash('demo123', 10).catch(() => '$2b$10$obGYfMfGPcS9/EtdCd5RBOw8AswK867ZtIDGwf7Rl3eSr9ptXNhMW');
 
-    this.data.users = [
-      { id: 'admin-1', name: 'System Admin', email: 'admin@lib.edu', password: hash, role: 'admin', department: 'Administration', isActive: true, status: 'active' },
-      { id: 'lib-1', name: 'Rohan Das', email: 'rohan@lib.edu', password: hash, role: 'custodian', department: 'Library', isActive: true, status: 'active' },
-      { id: 'stu-1', name: 'Aarav Sharma', email: 'aarav@lib.edu', password: hash, role: 'student', department: 'Computer Science', isActive: true, status: 'active' },
-      { id: 'fac-1', name: 'Dr. Sarah', email: 'teacher@lib.edu', password: hash, role: 'faculty', department: 'Mathematics', isActive: true, status: 'active' },
-      { id: 'stu-pending', name: 'John Doe', email: 'john@lib.edu', password: hash, role: 'student', department: 'Biology', isActive: false, status: 'pending' },
+    const users = [
+      { name: 'System Admin', email: 'admin@lib.edu', password: hash, role: 'admin', department: 'Administration', isActive: true, status: 'active' },
+      { name: 'Rohan Das', email: 'rohan@lib.edu', password: hash, role: 'custodian', department: 'Library', isActive: true, status: 'active' },
+      { name: 'Aarav Sharma', email: 'aarav@lib.edu', password: hash, role: 'student', department: 'Computer Science', isActive: true, status: 'active' },
+      { name: 'Dr. Sarah', email: 'teacher@lib.edu', password: hash, role: 'faculty', department: 'Mathematics', isActive: true, status: 'active' },
+      { name: 'John Doe', email: 'john@lib.edu', password: hash, role: 'student', department: 'Biology', isActive: false, status: 'pending' },
     ];
 
-    this.data.books = [
+    const books = [
       { 
-        id: 'book-1', 
         title: 'Clean Code', 
         author: 'Robert C. Martin', 
         category: 'Technology', 
@@ -67,7 +88,6 @@ class StorageService {
         rating: 4.8
       },
       { 
-        id: 'book-2', 
         title: 'The Alchemist', 
         author: 'Paulo Coelho', 
         category: 'Fiction', 
@@ -79,7 +99,7 @@ class StorageService {
       }
     ];
 
-    this.data.settings = {
+    const settings = {
       libraryName: 'LibraNova Smart Library',
       finePerDay: 5,
       studentLoanDays: 14,
@@ -132,7 +152,22 @@ class StorageService {
       studentStudyRoomBooking: true
     };
 
-    this.saveToFile();
+    if (this.isUsingMongo) {
+      try {
+        await mongoose.model('User').insertMany(users);
+        await mongoose.model('Book').insertMany(books);
+        await mongoose.model('Setting').create(settings);
+        console.log('✅ MongoDB seeded successfully');
+      } catch (err) {
+        console.error('❌ MongoDB seeding failed:', err.message);
+      }
+    } else {
+      this.data.users = users.map(u => ({ ...u, id: Math.random().toString(36).substr(2, 9) }));
+      this.data.books = books.map(b => ({ ...b, id: Math.random().toString(36).substr(2, 9) }));
+      this.data.settings = settings;
+      this.saveToFile();
+      console.log('✅ JSON file seeded successfully');
+    }
   }
 
   loadFromFile() {
